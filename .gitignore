@@ -15,6 +15,7 @@ auth.json
 npm-debug.log
 yarn-error.log
 /dist
+*.zip
 /.fleet
 /.idea
 /.vscode
