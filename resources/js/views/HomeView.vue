@@ -12,7 +12,7 @@
       <div class="relative z-10 w-[min(1180px,calc(100%-48px))] mx-auto">
         <div class="max-w-2xl">
           <span class="inline-block px-4 py-1.5 rounded-full border-2 border-bubble-blue-light/60 dark:border-[#357ff1] text-white dark:text-bubble-blue-ice text-xs font-bold mb-6">
-            Bubble • Прачечная самообслуживания
+            Bubble • Современная прачечная
           </span>
           <h1 class="text-white dark:text-bubble-blue-ice font-black text-5xl sm:text-6xl lg:text-[72px] leading-[0.96] tracking-tight mb-6">
             Стираем ради<br>ваших улыбок
