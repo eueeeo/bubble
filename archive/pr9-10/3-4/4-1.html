@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Задание 4.1: Дашборд аналитики</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-slate-100 font-sans min-h-screen flex flex-col text-slate-800">
+
+  <div class="bg-slate-900 text-slate-300 px-4 py-2 text-xs flex justify-between items-center z-50">
+    <a href="./index.html" class="hover:underline">← К списку заданий</a>
+    <span>Задание 4.1: Analytics Dashboard</span>
+  </div>
+
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- Sidebar слева (Sidebar + Topbar + контент) -->
+    <aside id="dash-sidebar" class="w-56 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between shrink-0 p-4">
+      <div class="space-y-4">
+        <div class="font-bold text-sm text-slate-900">Analytics Pro</div>
+        <nav class="space-y-1 text-xs">
+          <a href="#" class="flex items-center gap-2 p-2 rounded-lg bg-purple-50 text-purple-700 font-semibold">
+            📊 Обзор
+          </a>
+          <a href="#" class="flex items-center gap-2 p-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+            💳 Транзакции
+          </a>
+          <a href="#" class="flex items-center gap-2 p-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+            👥 Клиенты
+          </a>
+          <a href="#" class="flex items-center gap-2 p-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+            ⚙️ Настройки
+          </a>
+        </nav>
+      </div>
+      <div class="text-[11px] text-slate-400">v1.0 • 2026</div>
+    </aside>
+
+    <!-- Основная область: Topbar + Контент -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto scrollbar-thin">
+      
+      <!-- Topbar с поиском и фильтром -->
+      <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+        <!-- Поиск -->
+        <div class="w-full sm:w-72">
+          <input 
+            type="search" 
+            placeholder="Поиск по транзакциям..." 
+            class="peer w-full px-3 py-1.5 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+        </div>
+
+        <!-- Фильтры -->
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select class="bg-slate-50 border border-slate-200 text-xs px-3 py-1.5 rounded-lg focus:outline-none">
+            <option>За последние 30 дней</option>
+            <option>За текущую неделю</option>
+          </select>
+          <button type="button" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
+            Применить
+          </button>
+        </div>
+      </header>
+
+      <!-- Контент на 12-колоночной сетке (grid grid-cols-12) -->
+      <main class="flex-1 p-4 sm:p-6 space-y-6">
+        
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">Аналитика показателей</h1>
+          <p class="text-xs text-slate-500">Сетка grid-cols-12, col-span-*, min-w-0, truncate, scrollbar-thin</p>
+        </div>
+
+        <!-- 4 stat-карточки с трендами (+12%, -3%) -->
+        <div class="grid grid-cols-12 gap-4">
+          
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm min-w-0">
+            <div class="text-xs text-slate-500 truncate">Выручка</div>
+            <div class="text-xl font-bold text-slate-900 mt-1">452 000 ₽</div>
+            <span class="text-xs font-semibold text-emerald-600">+12% к прошлому мес.</span>
+          </div>
+
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm min-w-0">
+            <div class="text-xs text-slate-500 truncate">Новые заказы</div>
+            <div class="text-xl font-bold text-slate-900 mt-1">184</div>
+            <span class="text-xs font-semibold text-emerald-600">+8% рост</span>
+          </div>
+
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm min-w-0">
+            <div class="text-xs text-slate-500 truncate">Возвраты</div>
+            <div class="text-xl font-bold text-slate-900 mt-1">5</div>
+            <span class="text-xs font-semibold text-red-500">-3% снизились</span>
+          </div>
+
+          <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm min-w-0">
+            <div class="text-xs text-slate-500 truncate">Средний чек</div>
+            <div class="text-xl font-bold text-slate-900 mt-1">2 450 ₽</div>
+            <span class="text-xs font-semibold text-emerald-600">+4% стабильно</span>
+          </div>
+
+        </div>
+
+        <!-- График (заглушка через grid + цветные ячейки) -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-sm font-bold text-slate-900">График активности по дням</h2>
+            <span class="text-xs text-slate-400">grid + цветные ячейки</span>
+          </div>
+
+          <!-- Сетка графика из 7 колонок (дни недели) с цветными ячейками разной высоты -->
+          <div class="grid grid-cols-7 gap-3 h-44 items-end border-b border-slate-200 pb-2 px-2">
+            
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">40%</span>
+              <div class="w-full bg-purple-200 group-hover:bg-purple-600 rounded-t transition-colors" style="height: 40px;"></div>
+              <span class="text-xs text-slate-500">Пн</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">65%</span>
+              <div class="w-full bg-purple-300 group-hover:bg-purple-600 rounded-t transition-colors" style="height: 65px;"></div>
+              <span class="text-xs text-slate-500">Вт</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">55%</span>
+              <div class="w-full bg-purple-300 group-hover:bg-purple-600 rounded-t transition-colors" style="height: 55px;"></div>
+              <span class="text-xs text-slate-500">Ср</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">85%</span>
+              <div class="w-full bg-purple-400 group-hover:bg-purple-600 rounded-t transition-colors" style="height: 85px;"></div>
+              <span class="text-xs text-slate-500">Чт</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">100%</span>
+              <div class="w-full bg-purple-600 rounded-t transition-colors" style="height: 100px;"></div>
+              <span class="text-xs font-bold text-purple-600">Пт</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">75%</span>
+              <div class="w-full bg-purple-400 group-hover:bg-purple-600 rounded-t transition-colors" style="height: 75px;"></div>
+              <span class="text-xs text-slate-500">Сб</span>
+            </div>
+
+            <div class="flex flex-col items-center gap-1 group">
+              <span class="text-[10px] text-slate-400 group-hover:text-purple-600">30%</span>
+              <div class="w-full bg-purple-200 group-hover:bg-purple-600 rounded-t transition-colors" style="height: 30px;"></div>
+              <span class="text-xs text-slate-500">Вс</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Таблица последних транзакций -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-w-0">
+          <div class="p-4 border-b border-slate-200">
+            <h2 class="text-sm font-bold text-slate-900">Последние транзакции</h2>
+          </div>
+          <div class="overflow-x-auto scrollbar-thin">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 text-slate-500 border-b border-slate-200">
+                <tr>
+                  <th class="p-3">Номер</th>
+                  <th class="p-3">Клиент</th>
+                  <th class="p-3">Услуга</th>
+                  <th class="p-3">Сумма</th>
+                  <th class="p-3">Статус</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-mono text-purple-600 font-semibold truncate">#TR-101</td>
+                  <td class="p-3 font-medium text-slate-900 truncate">Иван Иванов</td>
+                  <td class="p-3 text-slate-600 truncate">Стирка белья 5 кг</td>
+                  <td class="p-3 font-bold text-slate-900">1 200 ₽</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Выполнен</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-mono text-purple-600 font-semibold truncate">#TR-102</td>
+                  <td class="p-3 font-medium text-slate-900 truncate">Ольга Петрова</td>
+                  <td class="p-3 text-slate-600 truncate">Химчистка пуховика</td>
+                  <td class="p-3 font-bold text-slate-900">2 400 ₽</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">В работе</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-mono text-purple-600 font-semibold truncate">#TR-103</td>
+                  <td class="p-3 font-medium text-slate-900 truncate">Сергей Смирнов</td>
+                  <td class="p-3 text-slate-600 truncate">Глажка рубашек</td>
+                  <td class="p-3 font-bold text-slate-900">800 ₽</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">Принят</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

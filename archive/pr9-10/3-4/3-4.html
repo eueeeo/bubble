@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Задание 3.4: Тёмная тема</title>
+  <link rel="stylesheet" href="../style.css">
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col justify-between font-sans transition-colors duration-200">
+
+  <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-3 shadow-sm transition-colors duration-200">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="./index.html" class="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:underline">
+        ← К списку заданий
+      </a>
+
+      <!-- Кнопка-переключатель с иконкой солнца/луны -->
+      <button 
+        type="button" 
+        id="theme-btn"
+        onclick="toggleTheme()" 
+        class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700 text-xs font-semibold hover:border-purple-500 transition-colors"
+      >
+        <span id="theme-icon">🌙</span>
+        <span id="theme-text">Тема</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl mx-auto w-full p-4 sm:p-6 space-y-6">
+    
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Демонстрация Dark Mode</h1>
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        Все элементы адаптируются через префикс dark:bg-slate-900, dark:text-slate-100 и плавные transition-colors.
+      </p>
+    </div>
+
+    <!-- Карточка 1: Профиль и кнопки -->
+    <article class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors duration-200 space-y-4">
+      <div class="flex items-center gap-4">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Пользователь" class="w-12 h-12 rounded-full object-cover">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white">Анна Смирнова</h2>
+          <p class="text-xs text-purple-600 dark:text-purple-400">Frontend Разработчик</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        При переключении темы меняются фоны контейнеров, цвет основного текста, границ и второстепенных кнопок.
+      </p>
+      <div class="flex gap-2 pt-2">
+        <button type="button" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
+          Основная кнопка
+        </button>
+        <button type="button" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
+          Вторичная кнопка
+        </button>
+      </div>
+    </article>
+
+    <!-- Карточка 2: Таблица данных -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden transition-colors duration-200">
+      <table class="w-full text-xs text-left">
+        <thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+          <tr>
+            <th class="p-3">Компонент</th>
+            <th class="p-3">Светлая тема</th>
+            <th class="p-3">Тёмная тема</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+          <tr>
+            <td class="p-3 font-semibold text-slate-900 dark:text-white">Фон страницы</td>
+            <td class="p-3">bg-slate-50</td>
+            <td class="p-3 font-mono text-purple-600 dark:text-purple-400">dark:bg-slate-900</td>
+          </tr>
+          <tr>
+            <td class="p-3 font-semibold text-slate-900 dark:text-white">Цвет текста</td>
+            <td class="p-3">text-slate-800</td>
+            <td class="p-3 font-mono text-purple-600 dark:text-purple-400">dark:text-slate-100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-3 text-center text-xs text-slate-500 dark:text-slate-400 transition-colors">
+    Задание 3.4: darkMode: 'class', dark:bg-slate-900, dark:text-slate-100, transition-colors, солнце/луна
+  </footer>
+
+  <script>
+    function updateIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateIcon();
+    }
+
+    updateIcon();
+  </script>
+
+</body>
+</html>

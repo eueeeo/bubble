@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Задание 4.2: Многошаговая форма</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-slate-100 font-sans min-h-screen flex flex-col justify-between text-slate-800">
+
+  <header class="bg-white border-b border-slate-200 px-4 py-3 shadow-sm flex items-center justify-between">
+    <a href="./index.html" class="text-xs font-semibold text-purple-600 hover:underline">← К списку заданий</a>
+    <span class="text-xs font-bold text-slate-500">Задание 4.2: Степпер</span>
+  </header>
+
+  <main class="flex-1 flex items-center justify-center p-4 sm:p-6">
+    <div class="w-full max-w-xl bg-white rounded-2xl border border-slate-200 shadow p-6 sm:p-8">
+      
+      <!-- Прогресс-бар (степпер) с data-[state=*]:* и aria-* -->
+      <nav aria-label="Этапы оформления" class="mb-8">
+        <ol class="flex items-center justify-between relative">
+          <div class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-slate-200 -z-0"></div>
+          
+          <!-- Шаг 1: Личные данные -->
+          <li class="relative z-10 flex flex-col items-center">
+            <span 
+              id="step-1-badge" 
+              data-state="active"
+              aria-current="step"
+              class="w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center text-white transition-colors data-[state=active]:bg-purple-600 data-[state=complete]:bg-emerald-500 data-[state=pending]:bg-slate-200 data-[state=pending]:text-slate-600"
+            >
+              1
+            </span>
+            <span class="text-[11px] font-medium text-slate-700 mt-1">Данные</span>
+          </li>
+
+          <!-- Шаг 2: Адрес -->
+          <li class="relative z-10 flex flex-col items-center">
+            <span 
+              id="step-2-badge" 
+              data-state="pending"
+              class="w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center transition-colors data-[state=active]:bg-purple-600 data-[state=complete]:bg-emerald-500 data-[state=pending]:bg-slate-200 data-[state=pending]:text-slate-600 data-[state=active]:text-white data-[state=complete]:text-white"
+            >
+              2
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 mt-1">Адрес</span>
+          </li>
+
+          <!-- Шаг 3: Оплата -->
+          <li class="relative z-10 flex flex-col items-center">
+            <span 
+              id="step-3-badge" 
+              data-state="pending"
+              class="w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center transition-colors data-[state=active]:bg-purple-600 data-[state=complete]:bg-emerald-500 data-[state=pending]:bg-slate-200 data-[state=pending]:text-slate-600 data-[state=active]:text-white data-[state=complete]:text-white"
+            >
+              3
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 mt-1">Оплата</span>
+          </li>
+
+          <!-- Шаг 4: Подтверждение -->
+          <li class="relative z-10 flex flex-col items-center">
+            <span 
+              id="step-4-badge" 
+              data-state="pending"
+              class="w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center transition-colors data-[state=active]:bg-purple-600 data-[state=complete]:bg-emerald-500 data-[state=pending]:bg-slate-200 data-[state=pending]:text-slate-600 data-[state=active]:text-white data-[state=complete]:text-white"
+            >
+              4
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 mt-1">Финал</span>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Форма с 4 шагами -->
+      <form id="wizard-form" onsubmit="event.preventDefault()">
+        
+        <!-- Шаг 1: Личные данные -->
+        <div id="step-1" class="space-y-4">
+          <h2 class="text-base font-bold text-slate-900">Шаг 1: Личные данные</h2>
+          <div>
+            <label for="step-name" class="block text-xs font-semibold text-slate-700 mb-1">Имя и фамилия</label>
+            <input 
+              type="text" 
+              id="step-name" 
+              value="Алексей Смирнов" 
+              required 
+              aria-invalid="false"
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            >
+          </div>
+          <div>
+            <label for="step-phone" class="block text-xs font-semibold text-slate-700 mb-1">Телефон</label>
+            <input 
+              type="tel" 
+              id="step-phone" 
+              value="+7 (900) 123-45-67" 
+              required 
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            >
+          </div>
+        </div>
+
+        <!-- Шаг 2: Адрес (has-[:checked]:*) -->
+        <div id="step-2" class="hidden space-y-4">
+          <h2 class="text-base font-bold text-slate-900">Шаг 2: Способ доставки и адрес</h2>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="p-3 rounded-xl border border-slate-300 cursor-pointer transition-colors has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+              <input type="radio" name="delivery" value="courier" checked class="text-purple-600">
+              <span class="block text-xs font-bold text-slate-900 mt-1">Курьерская доставка</span>
+              <span class="text-[11px] text-slate-500">До двери за 1 день</span>
+            </label>
+
+            <label class="p-3 rounded-xl border border-slate-300 cursor-pointer transition-colors has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+              <input type="radio" name="delivery" value="pickup" class="text-purple-600">
+              <span class="block text-xs font-bold text-slate-900 mt-1">Самовывоз</span>
+              <span class="text-[11px] text-slate-500">Из пункта выдачи</span>
+            </label>
+          </div>
+
+          <div>
+            <label for="step-address" class="block text-xs font-semibold text-slate-700 mb-1">Адрес доставки</label>
+            <input 
+              type="text" 
+              id="step-address" 
+              value="г. Москва, ул. Ленина, д. 10" 
+              class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            >
+          </div>
+        </div>
+
+        <!-- Шаг 3: Оплата (has-[:checked]:*) -->
+        <div id="step-3" class="hidden space-y-4">
+          <h2 class="text-base font-bold text-slate-900">Шаг 3: Способ оплаты</h2>
+          
+          <div class="space-y-2">
+            <label class="flex items-center justify-between p-3 rounded-xl border border-slate-300 cursor-pointer has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+              <span class="text-xs font-medium text-slate-800">Банковская карта онлайн</span>
+              <input type="radio" name="payment" value="card" checked class="text-purple-600">
+            </label>
+
+            <label class="flex items-center justify-between p-3 rounded-xl border border-slate-300 cursor-pointer has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+              <span class="text-xs font-medium text-slate-800">Система быстрых платежей (СБП)</span>
+              <input type="radio" name="payment" value="sbp" class="text-purple-600">
+            </label>
+          </div>
+        </div>
+
+        <!-- Шаг 4: Подтверждение (success) -->
+        <div id="step-4" class="hidden space-y-4 text-center py-4">
+          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+            ✓
+          </div>
+          <h2 class="text-lg font-bold text-slate-900">Заказ успешно подтверждён!</h2>
+          <p class="text-xs text-slate-500 max-w-xs mx-auto">
+            Все 4 этапа пройдены. Данные сохранены и отправлены в обработку.
+          </p>
+          <button type="button" onclick="setStep(1)" class="text-xs text-purple-600 font-semibold hover:underline">
+            Пройти форму снова
+          </button>
+        </div>
+
+        <!-- Навигация Back / Next с disabled-состоянием -->
+        <div id="form-nav" class="flex items-center justify-between mt-6 pt-4 border-t border-slate-100">
+          <button 
+            type="button" 
+            id="back-btn" 
+            onclick="changeStep(-1)" 
+            disabled 
+            class="px-4 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Назад
+          </button>
+
+          <button 
+            type="button" 
+            id="next-btn" 
+            onclick="changeStep(1)" 
+            class="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold transition-colors"
+          >
+            Далее
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+    Задание 4.2: Личные данные → Адрес → Оплата → Подтверждение, Back/Next, disabled, has-[:checked], data-[state=*], aria-*
+  </footer>
+
+  <script>
+    let step = 1;
+
+    function setStep(newStep) {
+      step = newStep;
+      
+      // Переключаем блоки шагов
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step-${i}`).classList.toggle('hidden', i !== step);
+        const badge = document.getElementById(`step-${i}-badge`);
+        if (i < step) {
+          badge.setAttribute('data-state', 'complete');
+          badge.textContent = '✓';
+        } else if (i === step) {
+          badge.setAttribute('data-state', 'active');
+          badge.textContent = i;
+        } else {
+          badge.setAttribute('data-state', 'pending');
+          badge.textContent = i;
+        }
+      }
+
+      // Кнопки
+      document.getElementById('back-btn').disabled = (step === 1);
+      document.getElementById('form-nav').classList.toggle('hidden', step === 4);
+      document.getElementById('next-btn').textContent = (step === 3) ? 'Подтвердить' : 'Далее';
+    }
+
+    function changeStep(delta) {
+      const next = step + delta;
+      if (next >= 1 && next <= 4) {
+        setStep(next);
+      }
+    }
+  </script>
+
+</body>
+</html>

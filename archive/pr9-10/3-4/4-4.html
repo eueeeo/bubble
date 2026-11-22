@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Задание 4.4: Дизайн-система Tailwind</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-slate-50 font-sans min-h-screen flex flex-col text-slate-800">
+
+  <header class="bg-white border-b border-slate-200 px-4 py-3 shadow-sm flex items-center justify-between shrink-0">
+    <a href="./index.html" class="text-xs font-semibold text-purple-600 hover:underline">← К списку заданий</a>
+    <span class="text-xs font-bold text-slate-500">Задание 4.4: Design System Showcase</span>
+  </header>
+
+  <!-- Витрина компонентов в стиле Storybook -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-8">
+    
+    <div class="border-b border-slate-200 pb-4">
+      <h1 class="h1">Tailwind Design System</h1>
+      <p class="body mt-1">Витрина компонентов, созданных через @layer components, @apply и кастомные токены конфига.</p>
+    </div>
+
+    <!-- 1. Цвета: brand и semantic -->
+    <section class="space-y-3">
+      <h2 class="h2 text-lg">1. Colors (Brand & Semantic)</h2>
+      <div class="card-box space-y-3">
+        <div class="text-xs font-bold text-slate-500 uppercase">Brand Colors</div>
+        <div class="grid grid-cols-4 sm:grid-cols-6 gap-2 text-center text-xs">
+          <div class="p-2.5 rounded bg-brand-100 text-brand-900 font-mono text-[11px]">100</div>
+          <div class="p-2.5 rounded bg-brand-300 text-brand-950 font-mono text-[11px]">300</div>
+          <div class="p-2.5 rounded bg-brand-500 text-white font-mono text-[11px]">500</div>
+          <div class="p-2.5 rounded bg-brand-600 text-white font-mono text-[11px]">600</div>
+          <div class="p-2.5 rounded bg-brand-700 text-white font-mono text-[11px]">700</div>
+          <div class="p-2.5 rounded bg-brand-900 text-white font-mono text-[11px]">900</div>
+        </div>
+
+        <div class="text-xs font-bold text-slate-500 uppercase pt-2">Semantic Colors</div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs text-white">
+          <div class="p-2.5 rounded bg-semantic-success font-semibold">Success</div>
+          <div class="p-2.5 rounded bg-semantic-warning font-semibold">Warning</div>
+          <div class="p-2.5 rounded bg-semantic-danger font-semibold">Danger</div>
+          <div class="p-2.5 rounded bg-semantic-info font-semibold">Info</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Типографика: h1, h2, body -->
+    <section class="space-y-3">
+      <h2 class="h2 text-lg">2. Typography (.h1, .h2, .body)</h2>
+      <div class="card-box space-y-3">
+        <div>
+          <span class="text-[10px] text-slate-400 font-mono">.h1</span>
+          <div class="h1">Заголовок H1 Display</div>
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-400 font-mono">.h2</span>
+          <div class="h2">Заголовок H2 Section</div>
+        </div>
+        <div>
+          <span class="text-[10px] text-slate-400 font-mono">.body</span>
+          <p class="body">Базовый текст абзаца с нормализованной высотой строки и приятным контрастом.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Кнопки: primary/secondary/ghost/danger × sm/md/lg -->
+    <section class="space-y-3">
+      <h2 class="h2 text-lg">3. Buttons (Variants × Sizes)</h2>
+      <div class="card-box space-y-4">
+        <div class="flex flex-wrap gap-2 items-center">
+          <button type="button" class="btn btn-md btn-primary">Primary</button>
+          <button type="button" class="btn btn-md btn-secondary">Secondary</button>
+          <button type="button" class="btn btn-md btn-ghost">Ghost</button>
+          <button type="button" class="btn btn-md btn-danger">Danger</button>
+          <button type="button" disabled class="btn btn-md btn-primary">Disabled</button>
+        </div>
+        <div class="pt-2 border-t border-slate-100 flex flex-wrap gap-2 items-center">
+          <button type="button" class="btn btn-sm btn-primary">Size SM</button>
+          <button type="button" class="btn btn-md btn-primary">Size MD</button>
+          <button type="button" class="btn btn-lg btn-primary">Size LG</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Инпуты, чекбоксы и toggle -->
+    <section class="space-y-3">
+      <h2 class="h2 text-lg">4. Controls (Input, Checkbox, Toggle)</h2>
+      <div class="card-box grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Поле ввода</label>
+          <input type="text" placeholder="Введите текст..." class="input-field">
+        </div>
+        <div class="flex items-center gap-2 pt-4">
+          <input type="checkbox" id="demo-check" checked class="checkbox-custom">
+          <label for="demo-check" class="text-xs font-medium text-slate-700">Чекбокс</label>
+        </div>
+        <!-- Toggle (переключатель) -->
+        <div class="flex items-center gap-2 pt-4">
+          <button 
+            type="button" 
+            role="switch" 
+            aria-checked="true"
+            id="demo-toggle"
+            onclick="toggleSwitch(this)" 
+            class="w-11 h-6 bg-brand-600 rounded-full p-0.5 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500"
+          >
+            <span class="block w-5 h-5 bg-white rounded-full transition-transform duration-200 translate-x-5 shadow"></span>
+          </button>
+          <span class="text-xs font-medium text-slate-700">Toggle switch</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Badge & Alert & Card -->
+    <section class="space-y-3">
+      <h2 class="h2 text-lg">5. Badge & Alert & Card (.card-box)</h2>
+      <div class="card-box space-y-4">
+        <!-- Badges -->
+        <div class="flex flex-wrap gap-2">
+          <span class="badge badge-brand">Brand</span>
+          <span class="badge badge-success">Success</span>
+          <span class="badge badge-warning">Warning</span>
+          <span class="badge badge-danger">Danger</span>
+        </div>
+        <!-- Alerts -->
+        <div class="space-y-2 pt-2">
+          <div class="alert alert-success">✓ Операция успешно завершена!</div>
+          <div class="alert alert-danger">✕ Обнаружена ошибка валидации данных.</div>
+          <div class="alert alert-info">ℹ Информация о системном обновлении.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Modal (Модальное окно) -->
+    <section class="space-y-3">
+      <h2 class="h2 text-lg">6. Modal Component</h2>
+      <div class="card-box flex justify-between items-center">
+        <div>
+          <h3 class="text-sm font-bold text-slate-900">Интерактивный диалог</h3>
+          <p class="text-xs text-slate-500">Всплывающее окно с backdrop-blur</p>
+        </div>
+        <button type="button" onclick="openModal()" class="btn btn-sm btn-primary">
+          Открыть Modal
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Модальное окно -->
+  <div id="modal-box" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-200 space-y-3">
+      <h3 class="text-base font-bold text-slate-900">Модальное окно</h3>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Учебный компонент модального окна на чистом Tailwind CSS с полупрозрачным фоном backdrop-blur-sm.
+      </p>
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+        <button type="button" onclick="closeModal()" class="btn btn-sm btn-ghost">Закрыть</button>
+        <button type="button" onclick="closeModal()" class="btn btn-sm btn-primary">Понятно</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+    Задание 4.4: brand/semantic, h1/h2/body, кнопки (4 типа × 3 размера), input/checkbox/toggle, badge, alert, card, modal
+  </footer>
+
+  <script>
+    function openModal() {
+      document.getElementById('modal-box').classList.remove('hidden');
+    }
+    function closeModal() {
+      document.getElementById('modal-box').classList.add('hidden');
+    }
+
+    function toggleSwitch(btn) {
+      const isChecked = btn.getAttribute('aria-checked') === 'true';
+      const thumb = btn.firstElementChild;
+      if (isChecked) {
+        btn.setAttribute('aria-checked', 'false');
+        btn.classList.remove('bg-brand-600');
+        btn.classList.add('bg-slate-300');
+        thumb.classList.remove('translate-x-5');
+        thumb.classList.add('translate-x-0');
+      } else {
+        btn.setAttribute('aria-checked', 'true');
+        btn.classList.remove('bg-slate-300');
+        btn.classList.add('bg-brand-600');
+        thumb.classList.remove('translate-x-0');
+        thumb.classList.add('translate-x-5');
+      }
+    }
+  </script>
+
+</body>
+</html>

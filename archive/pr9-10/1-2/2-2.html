@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Абонементы прачечной Bubble</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans flex flex-col justify-between">
+
+  <header class="bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="./index.html" class="text-xs font-semibold text-bubble-blue hover:underline">← Назад к разделу</a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl mx-auto w-full p-4 sm:p-8">
+    <div class="text-center mb-10">
+      <h1 class="text-2xl font-bold text-slate-900">Абонементы Bubble</h1>
+      <p class="text-xs text-slate-500 mt-1">Копи штампы, экономь и выбирай удобный пакет стирок</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch pt-4">
+
+      <article class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="space-y-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Студент</h2>
+            <p class="text-xs text-slate-500">Для одного человека</p>
+          </div>
+          <div class="text-3xl font-black text-slate-900">24 BYN <span class="text-xs font-normal text-slate-400">/мес</span></div>
+          
+          <ul class="divide-y divide-slate-100 text-xs">
+            <li class="py-2.5 flex items-center gap-2">✅ 4 стирки по 7 кг (порошок включён)</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Свободный Wi-Fi и розетки</li>
+            <li class="py-2.5 flex items-center gap-2 text-slate-400">❌ Сушка белья в подарок</li>
+            <li class="py-2.5 flex items-center gap-2 text-slate-400">❌ Доставка курьером</li>
+          </ul>
+        </div>
+        <button type="button" class="w-full mt-6 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold py-2.5 rounded-xl transition-colors">
+          Выбрать Студент
+        </button>
+      </article>
+
+      <article class="relative bg-white rounded-2xl p-6 border-2 border-bubble-blue ring-2 ring-bubble-blue lg:scale-105 shadow-md flex flex-col justify-between z-10">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-bubble-blue text-white text-[11px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">
+          Абонемент 6 стирок
+        </span>
+
+        <div class="space-y-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Bubble Хит</h2>
+            <p class="text-xs text-slate-500">6 стирок по цене 4</p>
+          </div>
+          <div class="text-3xl font-black text-slate-900">32 BYN <span class="text-xs font-normal text-slate-400">/пакет</span></div>
+
+          <ul class="divide-y divide-slate-100 text-xs">
+            <li class="py-2.5 flex items-center gap-2">✅ 6 полных циклов стирки</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Профессиональный порошок включён</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Каждая 6-я стирка бесплатно</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Скидка 20% на сушку белья</li>
+          </ul>
+        </div>
+        <button type="button" class="w-full mt-6 bg-bubble-blue hover:bg-blue-600 text-white text-xs font-semibold py-2.5 rounded-xl shadow transition-colors">
+          Купить абонемент
+        </button>
+      </article>
+
+      <article class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="space-y-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Семейный VIP</h2>
+            <p class="text-xs text-slate-500">Стирка, сушка и доставка</p>
+          </div>
+          <div class="text-3xl font-black text-slate-900">75 BYN <span class="text-xs font-normal text-slate-400">/мес</span></div>
+
+          <ul class="divide-y divide-slate-100 text-xs">
+            <li class="py-2.5 flex items-center gap-2">✅ 10 стирок + 10 сушек</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Химчистка 1 пальто или куртки</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Доставка курьером по Минску</li>
+            <li class="py-2.5 flex items-center gap-2">✅ Глажка рубашек и брюк</li>
+          </ul>
+        </div>
+        <button type="button" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 rounded-xl transition-colors">
+          Оформить VIP
+        </button>
+      </article>
+
+    </div>
+  </main>
+
+</body>
+</html>
