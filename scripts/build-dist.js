@@ -14,10 +14,6 @@ if (fs.existsSync(manifestPath)) {
     if (fs.existsSync(p)) fs.rmSync(p, { recursive: true, force: true });
   });
 
-  if (fs.existsSync('public/_redirects')) {
-    fs.copyFileSync('public/_redirects', 'dist/_redirects');
-  }
-
   if (fs.existsSync('public/favicon.ico')) {
     fs.copyFileSync('public/favicon.ico', 'dist/favicon.ico');
   }
