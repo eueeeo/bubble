@@ -22,7 +22,7 @@
               Журнал
             </router-link>
             <a href="/admin" target="_blank" class="text-xs text-white/80 dark:text-[#94a9c9] hover:text-white hover:underline">
-              Voyager
+              Управление
             </a>
           </template>
 
@@ -111,7 +111,7 @@
             Журнал действий (Log)
           </router-link>
           <a href="/admin" target="_blank" class="text-xs text-gray-600 dark:text-[#94a9c9] hover:text-bubble-blue" @click="isNavOpen = false">
-            Панель Voyager
+            Панель управления
           </a>
         </template>
 
@@ -188,7 +188,7 @@
           </div>
           <template v-if="isAdmin">
             <div class="mt-3 flex items-center gap-3 text-xs">
-              <a href="/admin" target="_blank" class="text-white/70 dark:text-[#94a9c9] hover:text-white hover:underline">Voyager</a>
+              <a href="/admin" target="_blank" class="text-white/70 dark:text-[#94a9c9] hover:text-white hover:underline">Панель управления</a>
             </div>
           </template>
         </div>
