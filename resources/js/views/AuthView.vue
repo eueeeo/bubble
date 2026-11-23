@@ -29,14 +29,6 @@
         >
           Регистрация
         </button>
-        <button
-          type="button"
-          class="flex-1 py-1.5 px-2 rounded-full text-center text-xs font-extrabold transition-all"
-          :class="mode === 'forgot' ? 'bg-bubble-yellow text-bubble-dark shadow-brutal-sm scale-[1.02]' : 'text-bubble-dark/70 dark:text-[#94a9c9] hover:text-bubble-dark dark:hover:text-[#f1f5fd]'"
-          @click="setMode('forgot')"
-        >
-          Сброс
-        </button>
       </div>
 
       <form v-if="mode === 'login'" key="login-form" @submit.prevent="handleLogin" class="space-y-4">
@@ -156,27 +148,6 @@
           </span>
         </button>
       </form>
-
-      <form v-else-if="mode === 'forgot'" key="forgot-form" @submit.prevent="handleForgot" class="space-y-4">
-        <div>
-          <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Email</label>
-          <input
-            v-model="forgotEmail"
-            type="email"
-            placeholder="user@example.com"
-            required
-            class="w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none"
-          />
-        </div>
-        <button
-          type="submit"
-          class="w-full inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 disabled:opacity-50 transition-all mt-2 cursor-pointer"
-          :disabled="loading"
-        >
-          <span v-if="loading">Отправка...</span>
-          <span v-else>Отправить ссылку для сброса</span>
-        </button>
-      </form>
     </div>
   </div>
 </template>
@@ -203,14 +174,12 @@ export default {
         password_confirmation: '',
         agree: false,
       },
-      forgotEmail: '',
     };
   },
   computed: {
     titleText() {
-      if (this.mode === 'login') return 'Авторизация';
       if (this.mode === 'register') return 'Регистрация';
-      return 'Восстановление пароля';
+      return 'Авторизация';
     },
     pwdStrengthLevel() {
       const p = this.registerForm.password;
@@ -324,21 +293,6 @@ export default {
           return;
         }
         this.errorMessage = err.response?.data?.message || 'Ошибка регистрации. Проверьте введенные данные.';
-      } finally {
-        this.loading = false;
-      }
-    },
-    async handleForgot() {
-      this.loading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
-      try {
-        const res = await axios.post('/api/auth/forgot-password', { email: this.forgotEmail });
-        this.successMessage = res.data?.message || 'Если аккаунт с таким адресом существует, на него отправлена ссылка для восстановления пароля.';
-        this.forgotEmail = '';
-      } catch (err) {
-        this.successMessage = 'Если аккаунт с таким адресом существует, на него отправлена ссылка для восстановления пароля.';
-        this.forgotEmail = '';
       } finally {
         this.loading = false;
       }

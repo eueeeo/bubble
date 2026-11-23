@@ -335,9 +335,6 @@
     <section class="bg-bubble-blue dark:bg-[#121e3d] border-b-2 border-bubble-border dark:border-[#1f2d47] py-16 md:py-20 transition-colors" id="order">
       <div class="w-[min(1180px,calc(100%-48px))] mx-auto">
         <div class="max-w-3xl mx-auto bg-white dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-[26px] shadow-brutal p-8 sm:p-12 text-center text-bubble-dark dark:text-[#f1f5fd]">
-          <span class="inline-block px-3.5 py-1 rounded-full border border-bubble-dark dark:border-[#24355a] bg-bubble-yellow text-bubble-dark text-xs font-black uppercase tracking-wider mb-4 shadow-sm">
-            Онлайн-сервис Bubble
-          </span>
           <h2 class="text-bubble-blue dark:text-bubble-blue-ice font-black text-3xl sm:text-5xl tracking-tight mb-4">
             Готовы заказать?
           </h2>

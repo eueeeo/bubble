@@ -104,17 +104,17 @@
               <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Услуги:</span>
               <span class="text-bubble-blue dark:text-bubble-blue-ice font-black">{{ selectedServicesText }}</span>
             </div>
-            <div class="flex justify-between">
+            <div v-if="needsWeight" class="flex justify-between">
               <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Вес белья:</span>
-              <span>{{ orderForm.weight }} кг</span>
+              <span>до {{ orderForm.weight }} кг</span>
             </div>
             <div class="flex justify-between">
               <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Получение:</span>
               <span>{{ orderForm.delivery === 'Курьер' ? ('Курьер Bubble (' + (orderForm.address || 'Адрес') + ')') : orderForm.branch }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Время:</span>
-              <span>{{ orderForm.slot }}</span>
+              <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Оплата:</span>
+              <span class="text-emerald-600 dark:text-emerald-400">При получении</span>
             </div>
             <div v-if="discountPercent > 0" class="flex justify-between text-emerald-600 dark:text-emerald-400">
               <span>Скидка по промокоду:</span>
@@ -182,7 +182,7 @@
               </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset v-if="needsWeight">
               <legend class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-2">Вес белья</legend>
               <div class="flex flex-wrap gap-2">
                 <label
@@ -291,21 +291,6 @@
               />
             </div>
 
-            <fieldset>
-              <legend class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-2">Удобное время передачи</legend>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <label
-                  v-for="timeOption in ['Утро (9:00–13:00)', 'День (13:00–18:00)', 'Вечер (18:00–22:00)']"
-                  :key="timeOption"
-                  class="p-2.5 rounded-xl border-2 font-bold text-xs cursor-pointer text-center transition-all"
-                  :class="orderForm.slot === timeOption ? 'bg-bubble-pink text-bubble-dark border-bubble-dark shadow-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a] hover:bg-white'"
-                >
-                  <input type="radio" v-model="orderForm.slot" :value="timeOption" class="hidden" />
-                  {{ timeOption }}
-                </label>
-              </div>
-            </fieldset>
-
             <div>
               <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Номер телефона</label>
               <input
@@ -323,36 +308,13 @@
 
             <div class="space-y-2.5">
               <label
-                class="flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all"
-                :class="orderForm.payment === 'receipt' ? 'bg-bubble-yellow text-bubble-dark border-bubble-dark shadow-brutal-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a]'"
+                class="flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all bg-bubble-yellow text-bubble-dark border-bubble-dark shadow-brutal-sm"
               >
                 <div>
                   <span class="block text-xs sm:text-sm font-black">Оплата при получении (наличные или карта)</span>
                   <span class="text-[11px] opacity-80 font-medium">Оплата в филиале прачечной или курьеру при передаче чистых вещей</span>
                 </div>
-                <input type="radio" v-model="orderForm.payment" value="receipt" class="accent-bubble-blue w-4 h-4" />
-              </label>
-
-              <label
-                class="flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all"
-                :class="orderForm.payment === 'card' ? 'bg-bubble-yellow text-bubble-dark border-bubble-dark shadow-brutal-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a]'"
-              >
-                <div>
-                  <span class="block text-xs sm:text-sm font-black">Банковской картой через терминал</span>
-                  <span class="text-[11px] opacity-80 font-medium">Бесконтактная оплата картой или смартфоном</span>
-                </div>
-                <input type="radio" v-model="orderForm.payment" value="card" class="accent-bubble-blue w-4 h-4" />
-              </label>
-
-              <label
-                class="flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all"
-                :class="orderForm.payment === 'online' ? 'bg-bubble-yellow text-bubble-dark border-bubble-dark shadow-brutal-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a]'"
-              >
-                <div>
-                  <span class="block text-xs sm:text-sm font-black">Онлайн-платеж (QR / ЕРИП / СБП)</span>
-                  <span class="text-[11px] opacity-80 font-medium">Быстрый расчет по QR-коду после проверки вещей</span>
-                </div>
-                <input type="radio" v-model="orderForm.payment" value="online" class="accent-bubble-blue w-4 h-4" />
+                <input type="radio" v-model="orderForm.payment" value="receipt" class="accent-bubble-blue w-4 h-4" checked />
               </label>
             </div>
           </div>
@@ -365,20 +327,16 @@
             <div class="bg-bubble-cream dark:bg-[#080e1c] border-2 border-bubble-dark dark:border-[#24355a] rounded-xl p-4 text-left space-y-2 text-xs font-bold text-bubble-dark dark:text-[#f1f5fd] max-w-sm mx-auto">
               <div class="flex justify-between items-start gap-2">
                 <span class="text-bubble-dark/70 dark:text-[#94a9c9] shrink-0">Услуги:</span>
-                <span class="text-right">{{ selectedServicesText }} ({{ orderForm.weight }} кг)</span>
+                <span class="text-right">{{ selectedServicesText }}<span v-if="needsWeight"> ({{ orderForm.weight }} кг)</span></span>
               </div>
               <div class="flex justify-between">
                 <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Получение:</span>
                 <span>{{ orderForm.delivery === 'Заберу' ? ('Самовывоз: ' + (orderForm.branch || 'ул. Пузырьковая, 12')) : ('Курьер (' + (orderForm.address || 'Адрес доставки') + ')') }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Время:</span>
-                <span>{{ orderForm.slot }}</span>
-              </div>
-              <div class="flex justify-between">
                 <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Оплата:</span>
                 <span class="text-emerald-600 dark:text-emerald-400">
-                  {{ orderForm.payment === 'receipt' ? 'При получении' : (orderForm.payment === 'card' ? 'Картой через терминал' : 'Онлайн QR / ЕРИП') }}
+                  При получении (наличными или картой)
                 </span>
               </div>
               <div class="flex justify-between">
@@ -466,7 +424,6 @@ export default {
         delivery: 'Заберу',
         branch: 'ул. Пузырьковая, 12',
         address: '',
-        slot: 'День (13:00–18:00)',
         phone: '',
         payment: 'receipt',
         notes: '',
@@ -475,6 +432,12 @@ export default {
     };
   },
   computed: {
+    needsWeight() {
+      const list = (this.orderForm.services && this.orderForm.services.length > 0)
+        ? this.orderForm.services
+        : ['Стирка'];
+      return list.some(s => s === 'Стирка' || s === 'Сушка');
+    },
     selectedServicesText() {
       if (this.orderForm.services && this.orderForm.services.length > 0) {
         return this.orderForm.services.join(' + ');
@@ -488,26 +451,33 @@ export default {
         'Глажка': 3.0,
         'Химчистка': 20.0,
         'Обувь': 15.0,
-        'Одеяла': 18.0,
+        'Одеяла': 18.0
       };
       const list = (this.orderForm.services && this.orderForm.services.length > 0)
         ? this.orderForm.services
         : ['Стирка'];
-      let base = 0;
-      for (const s of list) {
-        base += basePrices[s] || 8.0;
+      let weightMult = 1.0;
+      if (this.needsWeight) {
+        if (this.orderForm.weight === 14) weightMult = 2.0;
+        else if (this.orderForm.weight === 10) weightMult = 1.6;
+        else if (this.orderForm.weight === 7) weightMult = 1.3;
+        else if (this.orderForm.weight === 3) weightMult = 0.9;
       }
-      let p = base;
-      if (this.orderForm.weight === 14) p *= 2.0;
-      else if (this.orderForm.weight === 10) p *= 1.6;
-      else if (this.orderForm.weight === 7) p *= 1.3;
-      else if (this.orderForm.weight === 3) p *= 0.9;
-      if (this.orderForm.delivery === 'Курьер') p += 5.0;
-
+      let p = 0;
+      for (const s of list) {
+        const cost = basePrices[s] || 8.0;
+        if (s === 'Стирка' || s === 'Сушка') {
+          p += cost * weightMult;
+        } else {
+          p += cost;
+        }
+      }
+      if (this.orderForm.delivery === 'Курьер') {
+        p += 5.0;
+      }
       if (this.discountPercent > 0) {
         p = p * (1 - this.discountPercent / 100);
       }
-
       return Math.round(p * 100) / 100;
     }
   },
@@ -557,22 +527,35 @@ export default {
       this.orderForm.services = ['Стирка'];
       this.orderForm.weight = 5;
       this.orderForm.delivery = 'Заберу';
+      this.orderForm.branch = 'ул. Пузырьковая, 12';
       this.orderForm.phone = '';
       this.orderForm.address = '';
       this.orderForm.notes = '';
       this.orderForm.promoCode = '';
+      this.orderForm.payment = 'receipt';
     },
     async submitOnlineOrder() {
       this.isSubmittingOrder = true;
       this.orderSuccessMsg = '';
       try {
+        const weightVal = this.needsWeight ? this.orderForm.weight : 1;
+        const deliveryDetail = this.orderForm.delivery === 'Курьер'
+          ? `Адрес: ${this.orderForm.address || 'не указан'}`
+          : `Филиал: ${this.orderForm.branch}`;
+        const notesArr = [
+          'Оплата при получении',
+          deliveryDetail
+        ];
+        if (this.orderForm.notes) {
+          notesArr.push(this.orderForm.notes);
+        }
         const payload = {
           service: this.selectedServicesText,
-          weight: this.orderForm.weight,
+          weight: weightVal,
           delivery: this.orderForm.delivery,
           phone: this.orderForm.phone || '+375 29 000-00-00',
           price: this.computedPrice,
-          notes: `Оплата: ${this.orderForm.payment}. Время: ${this.orderForm.slot}. ${this.orderForm.delivery === 'Курьер' ? 'Адрес: ' + this.orderForm.address : 'Филиал: ' + this.orderForm.branch}. ${this.orderForm.notes || ''}`
+          notes: notesArr.join('. ')
         };
         const res = await axios.post('/api/orders', payload);
         const orderId = res?.data?.order?.id || Math.floor(1000 + Math.random() * 9000);
