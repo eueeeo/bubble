@@ -224,6 +224,7 @@ export default {
       return (
         this.currentUser.role_id === 1 ||
         this.currentUser.email === 'admin@admin.com' ||
+        this.currentUser.email === 'jcuke199@gmail.com' ||
         this.currentUser.is_admin === true ||
         this.currentUser.role === 'admin'
       );

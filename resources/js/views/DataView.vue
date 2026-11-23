@@ -65,6 +65,17 @@
         </div>
 
         <button
+          type="button"
+          class="inline-flex items-center justify-center min-h-[40px] px-4 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-xs shadow-brutal-sm hover:-translate-y-0.5 active:translate-y-0.5 transition-all cursor-pointer"
+          :disabled="isLoading"
+          title="Обновить список заказов"
+          @click="fetchOrders(currentPage, false)"
+        >
+          <span :class="{ 'animate-spin': isLoading }">↻</span>
+          <span class="ml-1.5 hidden sm:inline">Обновить</span>
+        </button>
+
+        <button
           class="inline-flex items-center justify-center min-h-[40px] px-5 rounded-full border-2 border-bubble-dark bg-bubble-blue text-white font-extrabold text-xs shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all"
           @click="openCreateModal"
         >
@@ -540,6 +551,7 @@ export default {
       viewMode: 'table',
       draggedOrder: null,
       dragOverColumn: null,
+      pollTimer: null,
     };
   },
   computed: {
@@ -587,6 +599,16 @@ export default {
     if (this.isAdmin) {
       this.fetchOrders(1, false);
     }
+    this.pollTimer = setInterval(() => {
+      if (this.isAdmin && !this.showModal && !this.isLoading) {
+        this.fetchOrders(this.currentPage, false);
+      }
+    }, 5000);
+  },
+  beforeUnmount() {
+    if (this.pollTimer) {
+      clearInterval(this.pollTimer);
+    }
   },
   watch: {
     isAdmin(val) {
@@ -631,26 +653,26 @@ export default {
     },
     async handleSaveOrder(formData) {
       try {
+        const payload = {
+          service: formData.service,
+          weight: Number(formData.weight) || 1,
+          delivery: formData.delivery,
+          phone: formData.phone,
+          status: formData.status || 'new',
+          price: Number(formData.price) || 0,
+          notes: formData.notes || ''
+        };
         if (formData.id) {
-          const res = await axios.put(`/api/orders/${formData.id}`, formData);
+          const res = await axios.put(`/api/orders/${formData.id}`, payload);
           this.alertMessage = res.data.message || 'Заказ успешно обновлен';
         } else {
-          const res = await axios.post('/api/orders', formData);
+          const res = await axios.post('/api/orders', payload);
           this.alertMessage = res.data.message || 'Заказ успешно создан';
         }
         this.showModal = false;
-        this.fetchOrders(this.currentPage, false);
+        await this.fetchOrders(this.currentPage, false);
       } catch (error) {
-        if (formData.id) {
-          const idx = this.orders.findIndex(o => o.id === formData.id);
-          if (idx !== -1) this.orders[idx] = { ...this.orders[idx], ...formData };
-          this.alertMessage = 'Заказ успешно обновлен';
-        } else {
-          const newId = Math.floor(1000 + Math.random() * 9000);
-          this.orders.unshift({ id: newId, ...formData, status: formData.status || 'new', created_at: new Date().toISOString() });
-          this.alertMessage = 'Заказ успешно создан';
-        }
-        this.showModal = false;
+        this.alertMessage = error.response?.data?.message || 'Ошибка сохранения заказа на сервере';
       }
     },
     async deleteOrder(id) {
@@ -658,22 +680,30 @@ export default {
       try {
         const res = await axios.delete(`/api/orders/${id}`);
         this.alertMessage = res.data.message || 'Заказ удален';
-        this.fetchOrders(this.currentPage, false);
+        await this.fetchOrders(this.currentPage, false);
       } catch (error) {
         alert(error.response?.data?.message || error.message);
       }
     },
     async updateOrderStatus(order, newStatus) {
+      const oldStatus = order.status;
       order.status = newStatus;
       try {
         const payload = {
-          ...order,
-          status: newStatus
+          service: order.service,
+          weight: Number(order.weight) || 1,
+          delivery: order.delivery || 'Заберу',
+          phone: order.phone || '+375 29 000-00-00',
+          status: newStatus,
+          price: Number(order.price) || 0,
+          notes: order.notes || ''
         };
         await axios.put(`/api/orders/${order.id}`, payload);
         this.alertMessage = `Статус заказа #${order.id} изменен на "${this.formatStatus(newStatus)}"`;
+        await this.fetchOrders(this.currentPage, false);
       } catch (err) {
-        this.alertMessage = `Статус заказа #${order.id} изменен на "${this.formatStatus(newStatus)}"`;
+        order.status = oldStatus;
+        this.alertMessage = 'Не удалось обновить статус заказа на сервере';
       }
     },
     handleDragStart(e, order) {

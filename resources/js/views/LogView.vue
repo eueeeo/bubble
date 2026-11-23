@@ -36,9 +36,11 @@
         </h2>
       </div>
       <button
-        class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all"
-        @click="fetchLogs(1)"
+        class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all cursor-pointer"
+        :disabled="isLoading"
+        @click="fetchLogs(currentPage)"
       >
+        <span :class="{ 'animate-spin': isLoading }" class="mr-1.5">↻</span>
         Обновить журнал
       </button>
     </div>
@@ -172,11 +174,22 @@ export default {
       isLoading: false,
       showCompare: false,
       activeLog: null,
+      pollTimer: null,
     };
   },
   mounted() {
     if (this.isAdmin) {
       this.fetchLogs(1);
+    }
+    this.pollTimer = setInterval(() => {
+      if (this.isAdmin && !this.showCompare && !this.isLoading) {
+        this.fetchLogs(this.currentPage);
+      }
+    }, 5000);
+  },
+  beforeUnmount() {
+    if (this.pollTimer) {
+      clearInterval(this.pollTimer);
     }
   },
   watch: {

@@ -39,9 +39,12 @@
               required
               @change="recalculatePrice"
             >
+              <option :value="1">1 кг (штучные услуги)</option>
               <option :value="3">3 кг</option>
               <option :value="5">5 кг</option>
               <option :value="7">7 кг</option>
+              <option :value="10">10 кг</option>
+              <option :value="14">14 кг</option>
             </select>
           </div>
         </div>
@@ -216,8 +219,10 @@ export default {
         base = basePrices[this.form.service] || 8.0;
       }
       let p = base;
-      if (this.form.weight === 7) p *= 1.3;
-      if (this.form.weight === 3) p *= 0.9;
+      if (this.form.weight === 14) p *= 2.0;
+      else if (this.form.weight === 10) p *= 1.6;
+      else if (this.form.weight === 7) p *= 1.3;
+      else if (this.form.weight === 3) p *= 0.9;
       if (this.form.delivery === 'Курьер') p += 5.0;
       this.form.price = Math.round(p * 100) / 100;
     },

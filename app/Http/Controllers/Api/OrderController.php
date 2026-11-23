@@ -24,13 +24,17 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             'service' => 'required|string',
-            'weight' => 'required|numeric',
+            'weight' => 'nullable|numeric',
             'delivery' => 'required|string',
             'phone' => 'required|string|max:30',
             'status' => 'nullable|string',
             'price' => 'nullable|numeric',
             'notes' => 'nullable|string',
         ]);
+
+        if (!isset($validated['weight']) || $validated['weight'] <= 0) {
+            $validated['weight'] = 1.0;
+        }
 
         if (empty($validated['status'])) {
             $validated['status'] = 'new';
@@ -67,13 +71,17 @@ class OrderController extends Controller
 
         $validated = $request->validate([
             'service' => 'required|string',
-            'weight' => 'required|numeric',
+            'weight' => 'nullable|numeric',
             'delivery' => 'required|string',
             'phone' => 'required|string|max:30',
             'status' => 'required|string',
             'price' => 'nullable|numeric',
             'notes' => 'nullable|string',
         ]);
+
+        if (!isset($validated['weight']) || $validated['weight'] <= 0) {
+            $validated['weight'] = (float)($order->weight ?? 1.0);
+        }
 
         if (!isset($validated['price']) || $validated['price'] <= 0) {
             $validated['price'] = $this->calculatePrice($validated['service'], $validated['weight'], $validated['delivery']);
