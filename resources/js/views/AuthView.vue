@@ -70,16 +70,6 @@
           <span v-if="loading">Вход...</span>
           <span v-else>Войти в Bubble</span>
         </button>
-
-        <div class="pt-2 text-center">
-          <button
-            type="button"
-            class="text-[11px] font-bold text-bubble-dark/70 dark:text-[#94a9c9] hover:text-bubble-blue dark:hover:text-bubble-blue-ice transition-colors cursor-pointer"
-            @click="fillAdminCredentials"
-          >
-            Войти как администратор (демо)
-          </button>
-        </div>
       </form>
 
       <form v-else-if="mode === 'register'" key="register-form" @submit.prevent="handleRegister" class="space-y-4" autocomplete="off">
@@ -168,9 +158,6 @@
       </form>
 
       <form v-else-if="mode === 'forgot'" key="forgot-form" @submit.prevent="handleForgot" class="space-y-4">
-        <p class="text-xs text-bubble-dark/80 dark:text-[#94a9c9] font-medium leading-relaxed">
-          Укажите ваш email. В целях безопасности пароли не отображаются на экране: ссылка для восстановления будет отправлена на почту.
-        </p>
         <div>
           <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Email</label>
           <input
@@ -268,10 +255,6 @@ export default {
           agree: false,
         };
       }
-    },
-    fillAdminCredentials() {
-      this.loginForm.email = 'admin@admin.com';
-      this.loginForm.password = 'password';
     },
     async handleLogin() {
       this.loading = true;
