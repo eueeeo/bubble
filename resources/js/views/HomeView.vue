@@ -19,13 +19,12 @@
           </p>
 
           <div class="flex flex-wrap gap-4">
-            <button
-              type="button"
-              class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all cursor-pointer"
-              @click="openCart()"
+            <router-link
+              to="/order"
+              class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
             >
-              Оформить заказ в корзине
-            </button>
+              Оформить заказ онлайн
+            </router-link>
             <a
               href="#prices"
               class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
@@ -59,329 +58,12 @@
               <option value="desc">Сначала дороже</option>
             </select>
 
-            <button
-              type="button"
-              class="lg:hidden inline-flex items-center px-3.5 py-2 rounded-xl border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] text-xs font-extrabold shadow-brutal-sm"
-              @click="showMobileDrawer = true"
-            >
-              Фильтры
-            </button>
-
-
-          </div>
-        </div>
-
-        <div class="flex flex-col lg:flex-row gap-8 items-start">
-          <aside class="w-64 bg-white dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-5 hidden lg:block shrink-0 space-y-6 text-xs text-bubble-dark dark:text-[#f1f5fd]">
-            <div>
-              <h3 class="font-black text-bubble-dark dark:text-bubble-blue-ice uppercase tracking-wider text-xs mb-3">Категория</h3>
-              <div class="space-y-2 font-bold text-bubble-dark/90 dark:text-[#f1f5fd]">
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" value="all" v-model="activeCategory" class="accent-bubble-blue" />
-                  Все категории
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" value="wash" v-model="activeCategory" class="accent-bubble-blue" />
-                  Стирка и сушка
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" value="care" v-model="activeCategory" class="accent-bubble-blue" />
-                  Химчистка и обувь
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" value="plans" v-model="activeCategory" class="accent-bubble-blue" />
-                  Абонементы
-                </label>
-              </div>
-            </div>
-
-            <div>
-              <h3 class="font-black text-bubble-dark dark:text-bubble-blue-ice uppercase tracking-wider text-xs mb-3">Особенности</h3>
-              <div class="flex flex-wrap gap-1.5">
-                <button
-                  type="button"
-                  v-for="t in tagOptions"
-                  :key="t.key"
-                  class="px-2.5 py-1 rounded-full text-[11px] font-extrabold border-2 transition-all cursor-pointer"
-                  :class="activeTag === t.key ? 'bg-bubble-pink text-bubble-dark border-bubble-dark shadow-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a] hover:bg-white'"
-                  @click="activeTag = t.key"
-                >
-                  {{ t.label }}
-                </button>
-              </div>
-            </div>
-
-            <ad-slot type="sidebar" />
-          </aside>
-
-          <div class="flex-1 w-full min-w-0">
-            <div v-if="showSkeletons" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div
-                v-for="n in 4"
-                :key="n"
-                class="bg-white dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-5 animate-pulse space-y-3"
-              >
-                <div class="w-full h-36 bg-slate-200 dark:bg-[#1a2640] rounded-xl"></div>
-                <div class="h-5 bg-slate-200 dark:bg-[#1a2640] rounded w-2/3"></div>
-                <div class="h-3 bg-slate-200 dark:bg-[#1a2640] rounded w-full"></div>
-                <div class="h-3 bg-slate-200 dark:bg-[#1a2640] rounded w-4/5"></div>
-                <div class="pt-3 border-t border-slate-200 dark:border-[#24355a] flex justify-between items-center">
-                  <div class="h-6 bg-slate-200 dark:bg-[#1a2640] rounded-full w-20"></div>
-                  <div class="h-6 bg-slate-200 dark:bg-[#1a2640] rounded-full w-16"></div>
-                </div>
-              </div>
-            </div>
-
-            <div v-else-if="filteredPrices.length === 0" class="bg-white dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-[22px] p-8 text-center text-bubble-dark dark:text-[#f1f5fd] font-bold">
-              По выбранным фильтрам ничего не найдено. Попробуйте увеличить максимальную цену или сбросить фильтры.
-              <div class="mt-4">
-                <button
-                  type="button"
-                  class="inline-flex items-center px-4 py-2 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-xs"
-                  @click="resetFilters"
-                >
-                  Сбросить фильтры
-                </button>
-              </div>
-            </div>
-
-            <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <article
-                v-for="item in filteredPrices"
-                :key="item.title"
-                class="@container border-2 border-bubble-dark rounded-[22px] shadow-brutal p-5 flex flex-col justify-between hover:-translate-y-1 hover:shadow-brutal-lg transition-all"
-                :class="item.accent ? 'bg-bubble-yellow text-bubble-dark' : 'bg-white dark:bg-[#131d33] dark:border-[#24355a]'"
-              >
-                <div class="flex flex-col @sm:flex-row gap-4">
-                  <img
-                    :src="item.img"
-                    :alt="item.title"
-                    class="w-full @sm:w-36 h-32 rounded-xl object-cover border-2 border-bubble-dark dark:border-[#24355a] shrink-0 bg-slate-100 dark:bg-[#080e1c]"
-                  />
-                  <div class="flex-1 flex flex-col justify-between">
-                    <div>
-                      <div class="flex items-center justify-between gap-2 mb-1">
-                        <span class="px-2 py-0.5 rounded-full border border-bubble-dark text-[10px] font-black uppercase bg-bubble-cream text-bubble-dark">
-                          {{ item.tagLabel }}
-                        </span>
-                        <span class="text-[11px] font-extrabold" :class="item.accent ? 'text-bubble-dark/80' : 'text-bubble-dark/70 dark:text-[#94a9c9]'">
-                          {{ item.weightLabel }}
-                        </span>
-                      </div>
-                      <h3 class="font-black text-base mt-1" :class="item.accent ? 'text-bubble-dark' : 'text-bubble-dark dark:text-[#f1f5fd]'">{{ item.title }}</h3>
-                      <p class="text-xs leading-relaxed mt-1 line-clamp-2" :class="item.accent ? 'text-bubble-dark/80' : 'text-bubble-dark/80 dark:text-[#94a9c9]' ">{{ item.desc }}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-3 mt-4 border-t-2 border-bubble-dark/10 dark:border-[#24355a]">
-                  <span
-                    class="px-3 py-1 rounded-full border-2 border-bubble-dark text-xs font-black"
-                    :class="item.accent ? 'bg-bubble-cream text-bubble-dark' : 'bg-bubble-yellow text-bubble-dark'"
-                  >
-                    {{ item.price }} BYN
-                  </span>
-                  <button
-                    type="button"
-                    class="inline-flex items-center px-4 py-1.5 rounded-full border-2 border-bubble-dark bg-bubble-blue text-white font-extrabold text-xs shadow-brutal-sm hover:-translate-y-0.5 transition-all cursor-pointer"
-                    @click="selectService(item.title)"
-                  >
-                    Выбрать
-                  </button>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-14">
-          <h3 class="text-bubble-blue dark:text-bubble-blue-ice font-black text-2xl sm:text-3xl tracking-tight mb-6">
-            Абонементы и тарифы
-          </h3>
-
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-            <article class="landing-pricing-card">
-              <div>
-                <h4 class="text-lg font-black text-bubble-dark dark:text-[#f1f5fd]">Стандарт</h4>
-                <p class="text-xs text-bubble-dark/70 dark:text-[#94a9c9] font-medium">Для одного человека</p>
-                <div class="text-3xl font-black text-bubble-dark dark:text-bubble-blue-ice my-4">
-                  24 BYN <span class="text-xs font-normal text-bubble-dark/60 dark:text-[#94a9c9]">/мес</span>
-                </div>
-                <ul class="divide-y divide-bubble-dark/10 dark:divide-[#24355a] text-xs font-medium space-y-1 text-bubble-dark/90 dark:text-[#f1f5fd]">
-                  <li class="py-2">4 стирки по 7 кг (порошок включен)</li>
-                  <li class="py-2">Свободный Wi-Fi и розетки</li>
-                  <li class="py-2 text-bubble-dark/40 dark:text-[#94a9c9]/50">— Сушка белья в подарок</li>
-                  <li class="py-2 text-bubble-dark/40 dark:text-[#94a9c9]/50">— Доставка курьером</li>
-                </ul>
-              </div>
-              <button
-                type="button"
-                class="btn btn-sm btn-secondary w-full mt-6"
-                @click="selectPlan('Стандарт (24 BYN)')"
-              >
-                Выбрать тариф
-              </button>
-            </article>
-
-            <article class="bg-bubble-yellow border-2 border-bubble-dark rounded-[22px] shadow-brutal-lg lg:scale-105 p-6 flex flex-col justify-between relative z-10 text-bubble-dark">
-              <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-bubble-pink border-2 border-bubble-dark text-bubble-dark text-[11px] font-black px-3.5 py-0.5 rounded-full shadow-sm">
-                Абонемент 6 стирок
-              </span>
-              <div class="space-y-4 pt-1">
-                <div>
-                  <h4 class="text-lg font-black text-bubble-dark">Bubble Хит</h4>
-                  <p class="text-xs text-bubble-dark/80 font-bold">6 стирок по цене 4</p>
-                </div>
-                <div class="text-3xl font-black text-bubble-dark">
-                  32 BYN <span class="text-xs font-normal text-bubble-dark/70">/пакет</span>
-                </div>
-                <ul class="divide-y divide-bubble-dark/15 text-xs font-bold space-y-1 text-bubble-dark">
-                  <li class="py-2">6 полных циклов стирки</li>
-                  <li class="py-2">Профессиональный порошок включен</li>
-                  <li class="py-2">Каждая 6-я стирка бесплатно</li>
-                  <li class="py-2">Скидка 20% на сушку белья</li>
-                </ul>
-              </div>
-              <button
-                type="button"
-                class="w-full mt-6 inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-cream text-bubble-dark font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all cursor-pointer"
-                @click="selectPlan('Bubble Хит — 6 стирок (32 BYN)')"
-              >
-                Купить абонемент
-              </button>
-            </article>
-
-            <article class="landing-pricing-card">
-              <div>
-                <h4 class="text-lg font-black text-bubble-dark dark:text-[#f1f5fd]">Семейный</h4>
-                <p class="text-xs text-bubble-dark/70 dark:text-[#94a9c9] font-medium">Стирка, сушка и доставка</p>
-                <div class="text-3xl font-black text-bubble-dark dark:text-bubble-blue-ice my-4">
-                  75 BYN <span class="text-xs font-normal text-bubble-dark/60 dark:text-[#94a9c9]">/мес</span>
-                </div>
-                <ul class="divide-y divide-bubble-dark/10 dark:divide-[#24355a] text-xs font-medium space-y-1 text-bubble-dark/90 dark:text-[#f1f5fd]">
-                  <li class="py-2">10 стирок + 10 сушек</li>
-                  <li class="py-2">Химчистка 1 пальто или куртки</li>
-                  <li class="py-2">Доставка курьером до двери</li>
-                  <li class="py-2">Глажка рубашек и брюк</li>
-                </ul>
-              </div>
-              <button
-                type="button"
-                class="btn btn-sm btn-secondary w-full mt-6"
-                @click="selectPlan('Семейный (75 BYN)')"
-              >
-                Выбрать тариф
-              </button>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div
-      v-if="showMobileDrawer"
-      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex flex-col justify-end"
-      @click.self="showMobileDrawer = false"
-    >
-      <div class="bg-white dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] rounded-t-2xl p-6 space-y-4 max-h-[80vh] overflow-y-auto transform transition-transform duration-300">
-        <div class="flex justify-between items-center pb-2 border-b border-bubble-dark/20 dark:border-[#24355a]">
-          <h3 class="text-base font-black text-bubble-dark dark:text-bubble-blue-ice">Фильтры каталога</h3>
-          <button type="button" class="text-lg font-black" @click="showMobileDrawer = false">✕</button>
-        </div>
-
-        <div>
-          <h4 class="font-black text-xs uppercase mb-2">Категория</h4>
-          <div class="space-y-2 text-xs font-bold">
-            <label class="flex items-center gap-2">
-              <input type="radio" value="all" v-model="activeCategory" /> Все категории
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="radio" value="wash" v-model="activeCategory" /> Стирка и сушка
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="radio" value="care" v-model="activeCategory" /> Химчистка и обувь
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="radio" value="plans" v-model="activeCategory" /> Абонементы
-            </label>
-          </div>
-        </div>
-
-        <div>
-          <h4 class="font-black text-xs uppercase mb-2">Особенности</h4>
-          <div class="flex flex-wrap gap-1.5">
-            <button
-              type="button"
-              v-for="t in tagOptions"
-              :key="t.key"
-              class="px-3 py-1 rounded-full text-xs font-extrabold border-2 transition-all cursor-pointer"
-              :class="activeTag === t.key ? 'bg-bubble-pink text-bubble-dark border-bubble-dark shadow-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a]'"
-              @click="activeTag = t.key"
-            >
-              {{ t.label }}
-            </button>
-          </div>
-        </div>
-
-        <button
-          type="button"
-          class="w-full inline-flex items-center justify-center min-h-[42px] rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-xs shadow-brutal-btn"
-          @click="showMobileDrawer = false"
-        >
-          Применить
-        </button>
-      </div>
-    </div>
-
-    <section class="bg-bubble-cream dark:bg-[#080e1c] border-b-2 border-bubble-border dark:border-[#24355a] py-16 md:py-20 transition-colors" id="how">
-      <div class="w-[min(1180px,calc(100%-48px))] mx-auto">
-        <div class="text-center max-w-xl mx-auto mb-10">
-          <h2 class="text-bubble-blue dark:text-bubble-blue-ice font-black text-4xl sm:text-5xl tracking-tight mb-3">
-            Как это работает
-          </h2>
-          <p class="text-xs sm:text-sm text-bubble-dark/80 dark:text-[#94a9c9] font-medium">
-            Все просто: от чистых вещей вас отделяют всего четыре понятных шага
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2 pb-6 px-1">
-          <article
-            v-for="step in steps"
-            :key="step.num"
-            class="bg-white dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-6 flex flex-col justify-between hover:-translate-y-1 transition-all"
-          >
-            <div>
-              <span class="w-11 h-11 rounded-full border-2 border-bubble-dark bg-bubble-pink flex items-center justify-center font-black text-lg text-bubble-dark mb-4 shadow-sm">
-                {{ step.num }}
-              </span>
-              <h3 class="font-black text-xl text-bubble-dark dark:text-[#f1f5fd] mb-1.5">{{ step.title }}</h3>
-              <p class="text-xs text-bubble-dark/80 dark:text-[#94a9c9] leading-relaxed font-medium">{{ step.desc }}</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-bubble-blue dark:bg-[#121e3d] border-b-2 border-bubble-border dark:border-[#1f2d47] py-16 md:py-20 transition-colors" id="order">
-      <div class="w-[min(1180px,calc(100%-48px))] mx-auto">
-        <div class="max-w-3xl mx-auto bg-white dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-[26px] shadow-brutal p-8 sm:p-12 text-center text-bubble-dark dark:text-[#f1f5fd]">
-          <span class="inline-block px-3.5 py-1 rounded-full border border-bubble-dark dark:border-[#24355a] bg-bubble-yellow text-bubble-dark text-xs font-black uppercase tracking-wider mb-4 shadow-sm">
-            Онлайн-сервис Bubble
-          </span>
-          <h2 class="text-bubble-blue dark:text-bubble-blue-ice font-black text-3xl sm:text-5xl tracking-tight mb-4">
-            Готовы сдать вещи в стирку?
-          </h2>
-          <p class="text-xs sm:text-base text-bubble-dark/80 dark:text-[#94a9c9] max-w-xl mx-auto font-medium mb-8 leading-relaxed">
-            Рассчитайте стоимость на интерактивном калькуляторе, выберите комплекс услуг (стирка, сушка, глажка, химчистка) и закажите курьера за 1 минуту.
-          </p>
-          <div class="flex flex-wrap items-center justify-center gap-4">
-            <button
-              type="button"
+            <router-link
+              to="/order"
               class="inline-flex items-center justify-center min-h-[48px] px-8 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all cursor-pointer"
-              @click="openCart()"
             >
-              Открыть корзину заказа →
-            </button>
+              Перейти к оформлению заказа →
+            </router-link>
             <a
               href="#prices"
               class="inline-flex items-center justify-center min-h-[48px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#0c1424] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-sm hover:-translate-y-0.5 transition-all"
@@ -763,7 +445,6 @@
 <script>
 import axios from 'axios';
 import BaseModal from '../components/BaseModal.vue';
-import { openCart } from '../cartStore.js';
 
 export default {
   name: 'HomeView',
@@ -1052,15 +733,12 @@ export default {
       }, 1000);
     },
 
-    openCart(service) {
-      openCart(service);
-    },
     selectService(title) {
       const match = ['Стирка', 'Сушка', 'Глажка', 'Химчистка', 'Обувь', 'Одеяла'].find(s => title.toLowerCase().includes(s.toLowerCase()));
-      openCart(match || 'Стирка');
+      this.$router.push({ path: '/order', query: { service: match || 'Стирка' } });
     },
     selectPlan(planName) {
-      openCart('Стирка');
+      this.$router.push({ path: '/order', query: { service: 'Стирка' } });
     },
     resetFilters() {
       this.activeCategory = 'all';

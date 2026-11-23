@@ -9,13 +9,7 @@
         <nav class="hidden lg:flex items-center gap-3 xl:gap-5 ml-auto text-white dark:text-[#f1f5fd] text-xs xl:text-sm font-bold">
           <a href="/#prices" class="hover:opacity-75 transition-opacity">Цены</a>
           <a href="/#how" class="hover:opacity-75 transition-opacity">Как это работает</a>
-          <button
-            type="button"
-            class="hover:opacity-75 transition-opacity text-white dark:text-[#f1f5fd] text-xs xl:text-sm font-bold bg-transparent border-0 cursor-pointer p-0"
-            @click="openCart()"
-          >
-            Корзина
-          </button>
+          <router-link to="/order" class="hover:opacity-75 transition-opacity">Калькулятор</router-link>
           <a href="/#addresses" class="hover:opacity-75 transition-opacity">Адреса</a>
           <a href="/#faq" class="hover:opacity-75 transition-opacity">Вопросы</a>
           <a href="/#contacts" class="hover:opacity-75 transition-opacity">Контакты</a>
@@ -66,23 +60,12 @@
           </template>
         </nav>
 
-        <button
-          type="button"
-          class="hidden sm:inline-flex items-center justify-center gap-2 min-h-[42px] px-5 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 active:shadow-[0_1px_0_#101a38] transition-all cursor-pointer"
-          @click="openCart()"
-          title="Открыть корзину заказа"
+        <router-link
+          to="/order"
+          class="hidden sm:inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 active:shadow-[0_1px_0_#101a38] transition-all"
         >
-          <span>🛒 Корзина</span>
-          <span
-            v-if="cartCount > 0"
-            class="px-2 py-0.5 text-xs font-black rounded-full bg-bubble-pink border border-bubble-dark shadow-sm"
-          >
-            {{ cartCount }}
-          </span>
-          <span class="text-xs font-black opacity-80">
-            • {{ computedCartPrice }} BYN
-          </span>
-        </button>
+          Оформить заказ
+        </router-link>
 
         <div class="lg:hidden flex items-center gap-2">
           <button
@@ -116,13 +99,13 @@
       >
         <a href="/#prices" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Цены</a>
         <a href="/#how" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Как это работает</a>
-        <button
-          type="button"
-          class="text-bubble-dark font-black bg-bubble-yellow p-3 rounded-xl text-center border-2 border-bubble-dark shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-          @click="openCart(); isNavOpen = false"
+        <router-link
+          to="/order"
+          class="text-bubble-dark font-black bg-bubble-yellow p-2.5 rounded-xl text-center border-2 border-bubble-dark shadow-sm"
+          @click="isNavOpen = false"
         >
-          <span>🛒 Корзина ({{ cartCount }}) • {{ computedCartPrice }} BYN</span>
-        </button>
+          Оформить заказ
+        </router-link>
         <a href="/#addresses" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Адреса</a>
         <a href="/#faq" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Вопросы</a>
         <a href="/#contacts" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Контакты</a>
@@ -219,21 +202,14 @@
         </div>
       </div>
     </footer>
-
-    <cart-drawer />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import CartDrawer from './components/CartDrawer.vue';
-import { cartState, openCart, toggleCart, computedCartPrice } from './cartStore.js';
 
 export default {
   name: 'App',
-  components: {
-    CartDrawer
-  },
   data() {
     return {
       isNavOpen: false,
@@ -242,12 +218,6 @@ export default {
     };
   },
   computed: {
-    cartCount() {
-      return cartState.services.length;
-    },
-    computedCartPrice() {
-      return computedCartPrice.value;
-    },
     isAdmin() {
       if (!this.currentUser) return false;
       return (
@@ -258,27 +228,11 @@ export default {
       );
     }
   },
-  watch: {
-    '$route.query.cart': {
-      immediate: true,
-      handler(val) {
-        if (val) {
-          openCart();
-        }
-      }
-    }
-  },
   mounted() {
     this.checkCurrentUser();
     this.initTheme();
   },
   methods: {
-    openCart(service) {
-      openCart(service);
-    },
-    toggleCart() {
-      toggleCart();
-    },
     initTheme() {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme === 'dark') {
