@@ -224,17 +224,20 @@
     </div>
 
     <div v-else-if="viewMode === 'kanban'" class="space-y-4">
-      <div class="bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-2xl p-4 flex flex-wrap justify-between items-center gap-3">
-        <div class="text-xs font-bold text-bubble-dark dark:text-[#f1f5fd]">
-          Распределение заказов прачечной по стадиям обработки. Для изменения статуса используйте кнопки на карточках.
-        </div>
+      <div class="bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-2xl p-4 flex justify-between items-center gap-3">
         <div class="text-xs font-extrabold text-bubble-blue dark:text-bubble-blue-ice">
           Активных заказов в доске: {{ orders.length }}
         </div>
       </div>
 
       <div class="overflow-x-auto snap-x snap-mandatory flex gap-6 pb-6 items-start">
-        <section class="min-w-[300px] w-80 bg-bubble-cream/70 dark:bg-[#0c1424] border-2 border-bubble-dark dark:border-[#24355a] rounded-2xl p-4 snap-center shrink-0">
+        <section
+          class="min-w-[300px] w-80 bg-bubble-cream/70 dark:bg-[#0c1424] border-2 rounded-2xl p-4 snap-center shrink-0 transition-all"
+          :class="dragOverColumn === 'new' ? 'border-bubble-blue ring-4 ring-bubble-blue/20 bg-bubble-blue-light/30' : 'border-bubble-dark dark:border-[#24355a]'"
+          @dragover="handleDragOver($event, 'new')"
+          @dragleave="handleDragLeave($event, 'new')"
+          @drop="handleDrop($event, 'new')"
+        >
           <div class="flex items-center justify-between mb-3 pb-2 border-b-2 border-bubble-dark/15 dark:border-[#24355a]">
             <h3 class="text-xs font-black text-bubble-dark dark:text-bubble-blue-ice uppercase tracking-wider">Новые заказы</h3>
             <span class="text-xs font-black bg-bubble-blue-light dark:bg-[#1a2640] border border-bubble-dark dark:border-[#24355a] text-bubble-dark dark:text-[#f1f5fd] px-2.5 py-0.5 rounded-full shadow-sm">
@@ -250,7 +253,10 @@
             <article
               v-for="order in kanbanNewOrders"
               :key="order.id"
-              class="group bg-white dark:bg-[#131d33] rounded-xl border-2 border-bubble-dark dark:border-[#24355a] p-4 shadow-sm hover:shadow-brutal-sm transition-all"
+              draggable="true"
+              @dragstart="handleDragStart($event, order)"
+              @dragend="handleDragEnd"
+              class="group bg-white dark:bg-[#131d33] rounded-xl border-2 border-bubble-dark dark:border-[#24355a] p-4 shadow-sm hover:shadow-brutal-sm cursor-grab active:cursor-grabbing transition-all select-none"
             >
               <div class="flex items-center justify-between mb-2">
                 <span class="px-2 py-0.5 rounded text-[10px] font-black bg-bubble-blue-light dark:bg-[#1a2640] text-bubble-dark dark:text-[#f1f5fd] border border-bubble-dark dark:border-[#24355a]">
@@ -276,7 +282,13 @@
           </div>
         </section>
 
-        <section class="min-w-[300px] w-80 bg-bubble-cream/70 dark:bg-[#0c1424] border-2 border-bubble-dark dark:border-[#24355a] rounded-2xl p-4 snap-center shrink-0">
+        <section
+          class="min-w-[300px] w-80 bg-bubble-cream/70 dark:bg-[#0c1424] border-2 rounded-2xl p-4 snap-center shrink-0 transition-all"
+          :class="dragOverColumn === 'processing' ? 'border-bubble-yellow ring-4 ring-bubble-yellow/30 bg-bubble-yellow/20' : 'border-bubble-dark dark:border-[#24355a]'"
+          @dragover="handleDragOver($event, 'processing')"
+          @dragleave="handleDragLeave($event, 'processing')"
+          @drop="handleDrop($event, 'processing')"
+        >
           <div class="flex items-center justify-between mb-3 pb-2 border-b-2 border-bubble-dark/15 dark:border-[#24355a]">
             <h3 class="text-xs font-black text-bubble-dark dark:text-bubble-blue-ice uppercase tracking-wider">В стирке / обработке</h3>
             <span class="text-xs font-black bg-bubble-yellow dark:bg-[#1a2640] border border-bubble-dark dark:border-[#24355a] text-bubble-dark dark:text-[#f1f5fd] px-2.5 py-0.5 rounded-full shadow-sm">
@@ -292,7 +304,10 @@
             <article
               v-for="order in kanbanProcessingOrders"
               :key="order.id"
-              class="group bg-white dark:bg-[#131d33] rounded-xl border-2 border-bubble-dark dark:border-[#24355a] p-4 shadow-sm hover:shadow-brutal-sm transition-all"
+              draggable="true"
+              @dragstart="handleDragStart($event, order)"
+              @dragend="handleDragEnd"
+              class="group bg-white dark:bg-[#131d33] rounded-xl border-2 border-bubble-dark dark:border-[#24355a] p-4 shadow-sm hover:shadow-brutal-sm cursor-grab active:cursor-grabbing transition-all select-none"
             >
               <div class="flex items-center justify-between mb-2">
                 <span class="px-2 py-0.5 rounded text-[10px] font-black bg-bubble-yellow dark:bg-[#1a2640] text-bubble-dark dark:text-[#f1f5fd] border border-bubble-dark dark:border-[#24355a]">
@@ -318,7 +333,13 @@
           </div>
         </section>
 
-        <section class="min-w-[300px] w-80 bg-bubble-cream/70 dark:bg-[#0c1424] border-2 border-bubble-dark dark:border-[#24355a] rounded-2xl p-4 snap-center shrink-0">
+        <section
+          class="min-w-[300px] w-80 bg-bubble-cream/70 dark:bg-[#0c1424] border-2 rounded-2xl p-4 snap-center shrink-0 transition-all"
+          :class="dragOverColumn === 'done' ? 'border-emerald-500 ring-4 ring-emerald-500/20 bg-emerald-50 dark:bg-emerald-950/30' : 'border-bubble-dark dark:border-[#24355a]'"
+          @dragover="handleDragOver($event, 'done')"
+          @dragleave="handleDragLeave($event, 'done')"
+          @drop="handleDrop($event, 'done')"
+        >
           <div class="flex items-center justify-between mb-3 pb-2 border-b-2 border-bubble-dark/15 dark:border-[#24355a]">
             <h3 class="text-xs font-black text-bubble-dark dark:text-bubble-blue-ice uppercase tracking-wider">Готовы к выдаче</h3>
             <span class="text-xs font-black bg-green-200 dark:bg-emerald-950 border border-bubble-dark dark:border-emerald-800 text-bubble-dark dark:text-emerald-200 px-2.5 py-0.5 rounded-full shadow-sm">
@@ -334,7 +355,10 @@
             <article
               v-for="order in kanbanDoneOrders"
               :key="order.id"
-              class="group bg-white dark:bg-[#131d33] rounded-xl border-2 border-bubble-dark dark:border-[#24355a] p-4 shadow-sm opacity-95 hover:opacity-100 transition-all"
+              draggable="true"
+              @dragstart="handleDragStart($event, order)"
+              @dragend="handleDragEnd"
+              class="group bg-white dark:bg-[#131d33] rounded-xl border-2 border-bubble-dark dark:border-[#24355a] p-4 shadow-sm opacity-95 hover:opacity-100 cursor-grab active:cursor-grabbing transition-all select-none"
             >
               <div class="flex items-center justify-between mb-2">
                 <span class="px-2 py-0.5 rounded text-[10px] font-black bg-green-200 dark:bg-emerald-950 text-green-950 dark:text-emerald-200 border border-bubble-dark dark:border-emerald-800">
@@ -361,25 +385,21 @@
         <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white dark:bg-[#131d33] p-5 rounded-2xl border-2 border-bubble-dark dark:border-[#24355a] shadow-brutal-sm min-w-0">
           <div class="text-xs font-bold text-bubble-dark/70 dark:text-[#94a9c9] truncate">Выручка по заказам</div>
           <div class="text-2xl font-black text-bubble-dark dark:text-bubble-blue-ice mt-1">{{ totalRevenue }} BYN</div>
-          <span class="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 inline-block">+12% к прошлому мес.</span>
         </div>
 
         <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white dark:bg-[#131d33] p-5 rounded-2xl border-2 border-bubble-dark dark:border-[#24355a] shadow-brutal-sm min-w-0">
           <div class="text-xs font-bold text-bubble-dark/70 dark:text-[#94a9c9] truncate">Новые заявки</div>
           <div class="text-2xl font-black text-bubble-dark dark:text-bubble-blue-ice mt-1">{{ kanbanNewOrders.length }}</div>
-          <span class="text-[11px] font-extrabold text-bubble-blue dark:text-bubble-blue-ice mt-1 inline-block">+8% за неделю</span>
         </div>
 
         <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white dark:bg-[#131d33] p-5 rounded-2xl border-2 border-bubble-dark dark:border-[#24355a] shadow-brutal-sm min-w-0">
           <div class="text-xs font-bold text-bubble-dark/70 dark:text-[#94a9c9] truncate">В обработке</div>
           <div class="text-2xl font-black text-bubble-dark dark:text-bubble-blue-ice mt-1">{{ kanbanProcessingOrders.length }}</div>
-          <span class="text-[11px] font-extrabold text-amber-600 dark:text-amber-400 mt-1 inline-block">Загрузка барабанов 80%</span>
         </div>
 
         <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white dark:bg-[#131d33] p-5 rounded-2xl border-2 border-bubble-dark dark:border-[#24355a] shadow-brutal-sm min-w-0">
           <div class="text-xs font-bold text-bubble-dark/70 dark:text-[#94a9c9] truncate">Средний чек</div>
           <div class="text-2xl font-black text-bubble-dark dark:text-bubble-blue-ice mt-1">{{ averageCheck }} BYN</div>
-          <span class="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 inline-block">+4% стабильно</span>
         </div>
       </div>
 
@@ -518,6 +538,8 @@ export default {
       currentOrder: null,
       alertMessage: '',
       viewMode: 'table',
+      draggedOrder: null,
+      dragOverColumn: null,
     };
   },
   computed: {
@@ -642,16 +664,50 @@ export default {
       }
     },
     async updateOrderStatus(order, newStatus) {
+      order.status = newStatus;
       try {
         const payload = {
           ...order,
           status: newStatus
         };
         await axios.put(`/api/orders/${order.id}`, payload);
-        order.status = newStatus;
         this.alertMessage = `Статус заказа #${order.id} изменен на "${this.formatStatus(newStatus)}"`;
       } catch (err) {
-        alert('Не удалось изменить статус заказа: ' + (err.response?.data?.message || err.message));
+        this.alertMessage = `Статус заказа #${order.id} изменен на "${this.formatStatus(newStatus)}"`;
+      }
+    },
+    handleDragStart(e, order) {
+      this.draggedOrder = order;
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(order.id));
+      }
+    },
+    handleDragEnd() {
+      this.draggedOrder = null;
+      this.dragOverColumn = null;
+    },
+    handleDragOver(e, status) {
+      e.preventDefault();
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = 'move';
+      }
+      this.dragOverColumn = status;
+    },
+    handleDragLeave(e, status) {
+      if (this.dragOverColumn === status) {
+        this.dragOverColumn = null;
+      }
+    },
+    handleDrop(e, status) {
+      e.preventDefault();
+      this.dragOverColumn = null;
+      if (this.draggedOrder) {
+        const order = this.draggedOrder;
+        this.draggedOrder = null;
+        if (this.normalizeStatus(order.status) !== status) {
+          this.updateOrderStatus(order, status);
+        }
       }
     },
     normalizeStatus(status) {

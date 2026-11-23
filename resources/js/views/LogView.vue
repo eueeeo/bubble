@@ -34,9 +34,6 @@
         <h2 class="text-bubble-blue dark:text-bubble-blue-ice font-black text-3xl sm:text-4xl tracking-[-1.5px] text-shadow-title">
           Журнал действий
         </h2>
-        <p class="text-xs sm:text-sm text-bubble-dark/80 dark:text-[#94a9c9] mt-1 font-medium">
-          История изменений объектов, логирование импорта Excel и действий пользователей.
-        </p>
       </div>
       <button
         class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all"

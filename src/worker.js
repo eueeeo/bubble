@@ -23,6 +23,14 @@ export default {
           }), { headers: { 'Content-Type': 'application/json' } });
         }
 
+        if (request.method === 'PUT') {
+          const body = await request.json().catch(() => ({}));
+          return new Response(JSON.stringify({
+            message: 'Заказ успешно обновлен',
+            order: body
+          }), { headers: { 'Content-Type': 'application/json' } });
+        }
+
         return new Response(JSON.stringify({
           data: [
             { id: 101, service: 'Стирка повседневной одежды', weight: 5, delivery: 'Заберу', phone: '+375 29 111-22-33', price: 8, status: 'done', created_at: '2026-11-20 12:00:00' },
