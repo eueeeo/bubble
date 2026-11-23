@@ -59,12 +59,12 @@
           </template>
         </nav>
 
-        <a
-          href="/#order"
+        <router-link
+          to="/order"
           class="hidden sm:inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 active:shadow-[0_1px_0_#101a38] transition-all"
         >
-          Заказать
-        </a>
+          Оформить заказ
+        </router-link>
 
         <div class="lg:hidden flex items-center gap-2">
           <button
@@ -98,6 +98,14 @@
       >
         <a href="/#prices" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Цены</a>
         <a href="/#how" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Как это работает</a>
+        <router-link
+          to="/order"
+          class="text-bubble-dark font-black bg-bubble-yellow p-2.5 rounded-xl text-center border-2 border-bubble-dark shadow-sm"
+          @click="isNavOpen = false"
+        >
+          Оформить заказ
+        </router-link>
+        <a href="/#order" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Калькулятор на главной</a>
         <a href="/#addresses" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Адреса</a>
         <a href="/#faq" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Вопросы</a>
         <a href="/#contacts" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Контакты</a>

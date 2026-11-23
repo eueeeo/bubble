@@ -19,17 +19,17 @@
           </p>
 
           <div class="flex flex-wrap gap-4">
+            <router-link
+              to="/order"
+              class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
+            >
+              Оформить заказ онлайн
+            </router-link>
             <a
               href="#prices"
-              class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
-            >
-              Смотреть цены
-            </a>
-            <a
-              href="#addresses"
               class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
             >
-              Найти прачечную
+              Смотреть цены
             </a>
           </div>
         </div>
@@ -341,6 +341,14 @@
           <p class="text-xs sm:text-sm text-bubble-blue-ice/90 dark:text-[#94a9c9] font-medium">
             Рассчитайте стоимость и отправьте заявку онлайн
           </p>
+          <div class="mt-3">
+            <router-link
+              to="/order"
+              class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark text-xs font-black shadow-brutal-sm hover:-translate-y-0.5 transition-all"
+            >
+              Открыть на отдельной странице →
+            </router-link>
+          </div>
         </div>
 
         <div class="max-w-2xl mx-auto bg-white dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-[24px] shadow-brutal p-6 sm:p-8 text-bubble-dark dark:text-[#f1f5fd]">
