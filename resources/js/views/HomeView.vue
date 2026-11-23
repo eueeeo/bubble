@@ -635,7 +635,7 @@
             class="bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-6 text-bubble-dark dark:text-[#f1f5fd] flex flex-col justify-between hover:-translate-y-1 transition-all"
           >
             <div>
-              <span class="inline-block px-3 py-1 rounded-full border border-bubble-dark/20 text-[11px] font-black bg-white dark:bg-[#0c1424] text-bubble-blue dark:text-bubble-blue-ice mb-3">
+              <span class="inline-block px-3 py-1 rounded-full border-2 border-bubble-dark text-[11px] font-black bg-bubble-yellow text-bubble-dark shadow-sm mb-3">
                 {{ addr.status }}
               </span>
               <h3 class="font-black text-xl text-bubble-dark dark:text-[#f1f5fd] mb-1.5">{{ addr.title }}</h3>
