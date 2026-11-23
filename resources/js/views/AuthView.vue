@@ -39,13 +39,15 @@
         </button>
       </div>
 
-      <form v-if="mode === 'login'" @submit.prevent="handleLogin" class="space-y-4">
+      <form v-if="mode === 'login'" key="login-form" @submit.prevent="handleLogin" class="space-y-4">
         <div>
           <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Email</label>
           <input
             v-model="loginForm.email"
             type="email"
             required
+            autocomplete="email"
+            placeholder="name@example.com"
             class="w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none"
           />
         </div>
@@ -55,6 +57,8 @@
             v-model="loginForm.password"
             type="password"
             required
+            autocomplete="current-password"
+            placeholder="••••••••"
             class="w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none"
           />
         </div>
@@ -67,16 +71,25 @@
           <span v-else>Войти в Bubble</span>
         </button>
 
-        
+        <div class="pt-2 text-center">
+          <button
+            type="button"
+            class="text-[11px] font-bold text-bubble-dark/70 dark:text-[#94a9c9] hover:text-bubble-blue dark:hover:text-bubble-blue-ice transition-colors cursor-pointer"
+            @click="fillAdminCredentials"
+          >
+            Войти как администратор (демо)
+          </button>
+        </div>
       </form>
 
-      <form v-else-if="mode === 'register'" @submit.prevent="handleRegister" class="space-y-4">
+      <form v-else-if="mode === 'register'" key="register-form" @submit.prevent="handleRegister" class="space-y-4" autocomplete="off">
         <div>
           <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Ваше имя</label>
           <input
             v-model="registerForm.name"
             type="text"
             required
+            autocomplete="off"
             placeholder="Ваше имя"
             class="w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none"
           />
@@ -87,6 +100,7 @@
             v-model="registerForm.email"
             type="email"
             required
+            autocomplete="off"
             placeholder="name@example.com"
             class="peer w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none peer-invalid:border-red-500 transition-colors"
           />
@@ -101,6 +115,7 @@
             type="password"
             minlength="6"
             required
+            autocomplete="new-password"
             placeholder="Минимум 6 символов"
             class="w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none"
           />
@@ -119,6 +134,7 @@
             v-model="registerForm.password_confirmation"
             type="password"
             required
+            autocomplete="new-password"
             placeholder="Повторите пароль"
             class="w-full min-h-[43px] px-3.5 py-2 rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] text-bubble-dark dark:text-[#f1f5fd] font-bold text-sm focus:ring-4 focus:ring-bubble-blue/20 outline-none"
           />
@@ -187,8 +203,8 @@ export default {
       errorMessage: '',
       successMessage: '',
       loginForm: {
-        email: 'admin@admin.com',
-        password: 'password',
+        email: '',
+        password: '',
       },
       registerForm: {
         name: '',
@@ -240,6 +256,19 @@ export default {
       this.mode = m;
       this.errorMessage = '';
       this.successMessage = '';
+      if (m === 'register') {
+        this.registerForm = {
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: '',
+          agree: false,
+        };
+      }
+    },
+    fillAdminCredentials() {
+      this.loginForm.email = 'admin@admin.com';
+      this.loginForm.password = 'password';
     },
     async handleLogin() {
       this.loading = true;
