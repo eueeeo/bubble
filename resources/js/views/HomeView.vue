@@ -19,12 +19,13 @@
           </p>
 
           <div class="flex flex-wrap gap-4">
-            <router-link
-              to="/order"
-              class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
+            <button
+              type="button"
+              class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all cursor-pointer"
+              @click="openCart()"
             >
-              Оформить заказ онлайн
-            </router-link>
+              Оформить заказ в корзине
+            </button>
             <a
               href="#prices"
               class="inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#131d33] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 transition-all"
@@ -374,12 +375,13 @@
             Рассчитайте стоимость на интерактивном калькуляторе, выберите комплекс услуг (стирка, сушка, глажка, химчистка) и закажите курьера за 1 минуту.
           </p>
           <div class="flex flex-wrap items-center justify-center gap-4">
-            <router-link
-              to="/order"
+            <button
+              type="button"
               class="inline-flex items-center justify-center min-h-[48px] px-8 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-black text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 transition-all cursor-pointer"
+              @click="openCart()"
             >
-              Перейти к оформлению заказа →
-            </router-link>
+              Открыть корзину заказа →
+            </button>
             <a
               href="#prices"
               class="inline-flex items-center justify-center min-h-[48px] px-6 rounded-full border-2 border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#0c1424] text-bubble-dark dark:text-[#f1f5fd] font-extrabold text-sm shadow-brutal-sm hover:-translate-y-0.5 transition-all"
@@ -761,6 +763,7 @@
 <script>
 import axios from 'axios';
 import BaseModal from '../components/BaseModal.vue';
+import { openCart } from '../cartStore.js';
 
 export default {
   name: 'HomeView',
@@ -1049,12 +1052,15 @@ export default {
       }, 1000);
     },
 
+    openCart(service) {
+      openCart(service);
+    },
     selectService(title) {
       const match = ['Стирка', 'Сушка', 'Глажка', 'Химчистка', 'Обувь', 'Одеяла'].find(s => title.toLowerCase().includes(s.toLowerCase()));
-      this.$router.push({ path: '/order', query: { service: match || 'Стирка' } });
+      openCart(match || 'Стирка');
     },
     selectPlan(planName) {
-      this.$router.push({ path: '/order', query: { service: 'Стирка' } });
+      openCart('Стирка');
     },
     resetFilters() {
       this.activeCategory = 'all';
