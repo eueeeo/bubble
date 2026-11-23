@@ -16,12 +16,12 @@
   <main class="flex-1 flex items-center justify-center p-4 sm:p-6">
     <div class="w-full max-w-xl bg-white rounded-2xl border border-slate-200 shadow p-6 sm:p-8">
       
-      <!-- Прогресс-бар (степпер) с data-[state=*]:* и aria-* -->
+      
       <nav aria-label="Этапы оформления" class="mb-8">
         <ol class="flex items-center justify-between relative">
           <div class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-slate-200 -z-0"></div>
           
-          <!-- Шаг 1: Личные данные -->
+          
           <li class="relative z-10 flex flex-col items-center">
             <span 
               id="step-1-badge" 
@@ -34,7 +34,7 @@
             <span class="text-[11px] font-medium text-slate-700 mt-1">Данные</span>
           </li>
 
-          <!-- Шаг 2: Адрес -->
+          
           <li class="relative z-10 flex flex-col items-center">
             <span 
               id="step-2-badge" 
@@ -46,7 +46,7 @@
             <span class="text-[11px] font-medium text-slate-500 mt-1">Адрес</span>
           </li>
 
-          <!-- Шаг 3: Оплата -->
+          
           <li class="relative z-10 flex flex-col items-center">
             <span 
               id="step-3-badge" 
@@ -58,7 +58,7 @@
             <span class="text-[11px] font-medium text-slate-500 mt-1">Оплата</span>
           </li>
 
-          <!-- Шаг 4: Подтверждение -->
+          
           <li class="relative z-10 flex flex-col items-center">
             <span 
               id="step-4-badge" 
@@ -72,10 +72,10 @@
         </ol>
       </nav>
 
-      <!-- Форма с 4 шагами -->
+      
       <form id="wizard-form" onsubmit="event.preventDefault()">
         
-        <!-- Шаг 1: Личные данные -->
+        
         <div id="step-1" class="space-y-4">
           <h2 class="text-base font-bold text-slate-900">Шаг 1: Личные данные</h2>
           <div>
@@ -101,7 +101,7 @@
           </div>
         </div>
 
-        <!-- Шаг 2: Адрес (has-[:checked]:*) -->
+        
         <div id="step-2" class="hidden space-y-4">
           <h2 class="text-base font-bold text-slate-900">Шаг 2: Способ доставки и адрес</h2>
           
@@ -130,7 +130,7 @@
           </div>
         </div>
 
-        <!-- Шаг 3: Оплата (has-[:checked]:*) -->
+        
         <div id="step-3" class="hidden space-y-4">
           <h2 class="text-base font-bold text-slate-900">Шаг 3: Способ оплаты</h2>
           
@@ -147,12 +147,12 @@
           </div>
         </div>
 
-        <!-- Шаг 4: Подтверждение (success) -->
+        
         <div id="step-4" class="hidden space-y-4 text-center py-4">
           <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
             ✓
           </div>
-          <h2 class="text-lg font-bold text-slate-900">Заказ успешно подтверждён!</h2>
+          <h2 class="text-lg font-bold text-slate-900">Заказ успешно подтвержден!</h2>
           <p class="text-xs text-slate-500 max-w-xs mx-auto">
             Все 4 этапа пройдены. Данные сохранены и отправлены в обработку.
           </p>
@@ -161,7 +161,7 @@
           </button>
         </div>
 
-        <!-- Навигация Back / Next с disabled-состоянием -->
+        
         <div id="form-nav" class="flex items-center justify-between mt-6 pt-4 border-t border-slate-100">
           <button 
             type="button" 
@@ -198,7 +198,6 @@
     function setStep(newStep) {
       step = newStep;
       
-      // Переключаем блоки шагов
       for (let i = 1; i <= 4; i++) {
         document.getElementById(`step-${i}`).classList.toggle('hidden', i !== step);
         const badge = document.getElementById(`step-${i}-badge`);
@@ -214,7 +213,6 @@
         }
       }
 
-      // Кнопки
       document.getElementById('back-btn').disabled = (step === 1);
       document.getElementById('form-nav').classList.toggle('hidden', step === 4);
       document.getElementById('next-btn').textContent = (step === 3) ? 'Подтвердить' : 'Далее';

@@ -15,7 +15,7 @@
 
   <div class="flex-1 flex overflow-hidden">
     
-    <!-- Sidebar слева (Sidebar + Topbar + контент) -->
+    
     <aside id="dash-sidebar" class="w-56 bg-white border-r border-slate-200 hidden md:flex flex-col justify-between shrink-0 p-4">
       <div class="space-y-4">
         <div class="font-bold text-sm text-slate-900">Analytics Pro</div>
@@ -37,12 +37,12 @@
       <div class="text-[11px] text-slate-400">v1.0 • 2026</div>
     </aside>
 
-    <!-- Основная область: Topbar + Контент -->
+    
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto scrollbar-thin">
       
-      <!-- Topbar с поиском и фильтром -->
+      
       <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
-        <!-- Поиск -->
+        
         <div class="w-full sm:w-72">
           <input 
             type="search" 
@@ -51,7 +51,7 @@
           >
         </div>
 
-        <!-- Фильтры -->
+        
         <div class="flex items-center gap-2 w-full sm:w-auto">
           <select class="bg-slate-50 border border-slate-200 text-xs px-3 py-1.5 rounded-lg focus:outline-none">
             <option>За последние 30 дней</option>
@@ -63,7 +63,7 @@
         </div>
       </header>
 
-      <!-- Контент на 12-колоночной сетке (grid grid-cols-12) -->
+      
       <main class="flex-1 p-4 sm:p-6 space-y-6">
         
         <div>
@@ -71,7 +71,7 @@
           <p class="text-xs text-slate-500">Сетка grid-cols-12, col-span-*, min-w-0, truncate, scrollbar-thin</p>
         </div>
 
-        <!-- 4 stat-карточки с трендами (+12%, -3%) -->
+        
         <div class="grid grid-cols-12 gap-4">
           
           <div class="col-span-12 sm:col-span-6 lg:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm min-w-0">
@@ -100,14 +100,14 @@
 
         </div>
 
-        <!-- График (заглушка через grid + цветные ячейки) -->
+        
         <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center mb-4">
             <h2 class="text-sm font-bold text-slate-900">График активности по дням</h2>
             <span class="text-xs text-slate-400">grid + цветные ячейки</span>
           </div>
 
-          <!-- Сетка графика из 7 колонок (дни недели) с цветными ячейками разной высоты -->
+          
           <div class="grid grid-cols-7 gap-3 h-44 items-end border-b border-slate-200 pb-2 px-2">
             
             <div class="flex flex-col items-center gap-1 group">
@@ -155,7 +155,7 @@
           </div>
         </div>
 
-        <!-- Таблица последних транзакций -->
+        
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-w-0">
           <div class="p-4 border-b border-slate-200">
             <h2 class="text-sm font-bold text-slate-900">Последние транзакции</h2>

@@ -792,27 +792,6 @@ export default {
         { key: 'eco', label: 'Эко' },
         { key: 'popular', label: 'Популярное' }
       ],
-      serviceOptions: [
-        { name: 'Стирка', price: 8 },
-        { name: 'Сушка', price: 5 },
-        { name: 'Глажка', price: 3 },
-        { name: 'Химчистка', price: 20 },
-        { name: 'Обувь', price: 15 },
-        { name: 'Одеяла', price: 18 }
-      ],
-      wizardStep: 1,
-      orderForm: {
-        services: ['Стирка'],
-        service: 'Стирка',
-        weight: 5,
-        delivery: 'Заберу',
-        branch: 'ул. Пузырьковая, 12',
-        phone: '',
-        address: '',
-        payment: 'receipt'
-      },
-      isSubmittingOrder: false,
-      orderSuccessMsg: '',
       reviewForm: { name: '', text: '' },
       reviewMark: 5,
       reviewSuccessMsg: '',
@@ -868,34 +847,6 @@ export default {
     };
   },
   computed: {
-    selectedServicesText() {
-      if (this.orderForm.services && this.orderForm.services.length > 0) {
-        return this.orderForm.services.join(' + ');
-      }
-      return this.orderForm.service || 'Стирка';
-    },
-    computedPrice() {
-      const basePrices = {
-        'Стирка': 8.0,
-        'Сушка': 5.0,
-        'Глажка': 3.0,
-        'Химчистка': 20.0,
-        'Обувь': 15.0,
-        'Одеяла': 18.0,
-      };
-      const list = (this.orderForm.services && this.orderForm.services.length > 0)
-        ? this.orderForm.services
-        : (this.orderForm.service ? [this.orderForm.service] : ['Стирка']);
-      let base = 0;
-      for (const s of list) {
-        base += basePrices[s] || 8.0;
-      }
-      let p = base;
-      if (this.orderForm.weight === 7) p *= 1.3;
-      if (this.orderForm.weight === 3) p *= 0.9;
-      if (this.orderForm.delivery === 'Курьер') p += 5.0;
-      return Math.round(p * 100) / 100;
-    },
     filteredPrices() {
       let list = [...this.prices];
       if (this.activeCategory !== 'all') {
@@ -977,45 +928,6 @@ export default {
         }
       } finally {
         this.isUploading = false;
-      }
-    },
-    nextWizardStep() {
-      if (this.wizardStep === 1 && (!this.orderForm.services || this.orderForm.services.length === 0)) {
-        alert('Пожалуйста, выберите хотя бы одну услугу.');
-        return;
-      }
-      if (this.wizardStep === 2 && !this.orderForm.phone) {
-        alert('Пожалуйста, укажите контактный номер телефона.');
-        return;
-      }
-      if (this.wizardStep < 4) {
-        this.wizardStep++;
-      }
-    },
-    async submitOnlineOrder() {
-      this.isSubmittingOrder = true;
-      this.orderSuccessMsg = '';
-      try {
-        const payload = {
-          service: this.selectedServicesText,
-          weight: this.orderForm.weight,
-          delivery: this.orderForm.delivery,
-          phone: this.orderForm.phone || '+375 29 000-00-00',
-          price: this.computedPrice,
-          notes: `Оплата: ${this.orderForm.payment}. Адрес: ${this.orderForm.address}`
-        };
-        const res = await axios.post('/api/orders', payload);
-        const orderId = res?.data?.order?.id || Math.floor(1000 + Math.random() * 9000);
-        this.orderSuccessMsg = `Заказ #${orderId} успешно оформлен! Спасибо, что выбрали Bubble.`;
-        this.orderForm.phone = '';
-        this.wizardStep = 1;
-      } catch (err) {
-        const fallbackId = Math.floor(1000 + Math.random() * 9000);
-        this.orderSuccessMsg = `Заказ #${fallbackId} успешно оформлен! Спасибо, что выбрали Bubble.`;
-        this.orderForm.phone = '';
-        this.wizardStep = 1;
-      } finally {
-        this.isSubmittingOrder = false;
       }
     },
     submitReview() {

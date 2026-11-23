@@ -3,8 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && node scripts/build-dist.js",
-        "build:pr9-10": "tailwindcss -c ./pr9-10/tailwind.config.js -i ./pr9-10/src/style.css -o ./pr9-10/style.css --minify"
+        "build": "vite build && node scripts/build-dist.js"
     },
     "devDependencies": {
         "autoprefixer": "^10.6.1",

@@ -119,12 +119,6 @@ export default {
         });
       }
 
-      if (url.pathname.startsWith('/api/auth/forgot-password')) {
-        return new Response(JSON.stringify({
-          message: 'Если аккаунт с таким адресом существует, на него отправлена ссылка для восстановления пароля.'
-        }), { headers: { 'Content-Type': 'application/json' } });
-      }
-
       if (env && env.ASSETS && typeof env.ASSETS.fetch === 'function') {
         return await env.ASSETS.fetch(request);
       }
