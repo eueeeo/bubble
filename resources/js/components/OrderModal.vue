@@ -10,20 +10,25 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label class="mb-1.5 block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd]">Услуга</label>
-            <select
+            <input
               v-model="form.service"
-              class="w-full min-h-[42px] rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] px-3.5 py-2 text-sm font-bold text-bubble-dark dark:text-[#f1f5fd] focus:ring-4 focus:ring-bubble-blue/20 outline-none cursor-pointer"
+              type="text"
+              list="service-options-list"
+              class="w-full min-h-[42px] rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] px-3.5 py-2 text-sm font-bold text-bubble-dark dark:text-[#f1f5fd] focus:ring-4 focus:ring-bubble-blue/20 outline-none"
               required
-              @change="recalculatePrice"
-            >
-              <option value="Стирка">Стирка</option>
-              <option value="Сушка">Сушка</option>
-              <option value="Глажка">Глажка</option>
-              <option value="Химчистка">Химчистка</option>
-              <option value="Стирка обуви">Стирка обуви</option>
-              <option value="Одеяла и пледы">Одеяла и пледы</option>
-              <option value="Деликатная стирка">Деликатная стирка</option>
-            </select>
+              @input="recalculatePrice"
+            />
+            <datalist id="service-options-list">
+              <option value="Стирка" />
+              <option value="Сушка" />
+              <option value="Глажка" />
+              <option value="Стирка + Сушка" />
+              <option value="Стирка + Сушка + Глажка" />
+              <option value="Химчистка" />
+              <option value="Стирка обуви" />
+              <option value="Одеяла и пледы" />
+              <option value="Деликатная стирка" />
+            </datalist>
           </div>
 
           <div>
@@ -193,11 +198,24 @@ export default {
         'Сушка': 5.0,
         'Глажка': 3.0,
         'Химчистка': 20.0,
+        'Обувь': 15.0,
         'Стирка обуви': 15.0,
+        'Одеяла': 18.0,
         'Одеяла и пледы': 18.0,
         'Деликатная стирка': 10.0,
       };
-      let p = basePrices[this.form.service] || 8.0;
+      const parts = (this.form.service || '').split(/[\+,]/);
+      let base = 0;
+      for (const part of parts) {
+        const trimmed = part.trim();
+        if (basePrices[trimmed]) {
+          base += basePrices[trimmed];
+        }
+      }
+      if (base === 0) {
+        base = basePrices[this.form.service] || 8.0;
+      }
+      let p = base;
       if (this.form.weight === 7) p *= 1.3;
       if (this.form.weight === 3) p *= 0.9;
       if (this.form.delivery === 'Курьер') p += 5.0;

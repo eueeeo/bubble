@@ -357,7 +357,7 @@
                   <span v-if="wizardStep > 1">✓</span>
                   <span v-else>1</span>
                 </span>
-                <span class="text-[11px] font-extrabold text-bubble-dark dark:text-[#f1f5fd] mt-1.5">Услуга</span>
+                <span class="text-[11px] font-extrabold text-bubble-dark dark:text-[#f1f5fd] mt-1.5">Услуги</span>
               </li>
 
               <li class="relative z-10 flex flex-col items-center">
@@ -402,19 +402,39 @@
           </div>
 
           <div v-if="wizardStep === 1" class="space-y-5">
-            <h3 class="text-lg font-black text-bubble-dark dark:text-[#f1f5fd]">Шаг 1: Выберите услугу и объем</h3>
+            <h3 class="text-lg font-black text-bubble-dark dark:text-[#f1f5fd]">Шаг 1: Выберите услуги и объем</h3>
 
             <fieldset>
-              <legend class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-2">Услуга</legend>
+              <div class="flex items-center justify-between mb-2">
+                <legend class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd]">
+                  Услуги (можно выбрать несколько)
+                </legend>
+                <span class="text-[11px] font-black text-bubble-blue dark:text-bubble-blue-ice">
+                  Выбрано: {{ orderForm.services.length }}
+                </span>
+              </div>
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 <label
-                  v-for="s in ['Стирка', 'Сушка', 'Глажка', 'Химчистка', 'Обувь', 'Одеяла']"
-                  :key="s"
-                  class="p-3 rounded-xl border-2 text-center cursor-pointer font-extrabold text-xs transition-all flex items-center justify-center"
-                  :class="orderForm.service === s ? 'bg-bubble-yellow text-bubble-dark border-bubble-dark shadow-brutal-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a] hover:border-bubble-dark'"
+                  v-for="s in serviceOptions"
+                  :key="s.name"
+                  class="p-3 rounded-xl border-2 cursor-pointer font-extrabold text-xs transition-all flex flex-col justify-between min-h-[76px]"
+                  :class="orderForm.services.includes(s.name) ? 'bg-bubble-yellow text-bubble-dark border-bubble-dark shadow-brutal-sm' : 'bg-bubble-cream dark:bg-[#080e1c] text-bubble-dark dark:text-[#f1f5fd] border-bubble-dark/30 dark:border-[#24355a] hover:border-bubble-dark'"
                 >
-                  <input type="radio" v-model="orderForm.service" :value="s" class="hidden" />
-                  <span>{{ s }}</span>
+                  <div class="flex items-start justify-between gap-1 w-full">
+                    <span class="leading-snug">{{ s.name }}</span>
+                    <span
+                      class="w-4 h-4 rounded border border-bubble-dark flex items-center justify-center text-[10px] shrink-0 font-black transition-colors"
+                      :class="orderForm.services.includes(s.name) ? 'bg-bubble-dark text-white' : 'bg-white dark:bg-[#131d33] text-transparent'"
+                    >
+                      ✓
+                    </span>
+                  </div>
+                  <div class="mt-2 text-left">
+                    <span class="text-[11px] font-black opacity-80">
+                      {{ s.price }} BYN
+                    </span>
+                  </div>
+                  <input type="checkbox" :value="s.name" v-model="orderForm.services" class="hidden" />
                 </label>
               </div>
             </fieldset>
@@ -528,9 +548,9 @@
             </div>
             <h3 class="text-xl font-black text-bubble-dark dark:text-[#f1f5fd]">Заказ готов к подтверждению</h3>
             <div class="bg-bubble-cream dark:bg-[#080e1c] border-2 border-bubble-dark dark:border-[#24355a] rounded-xl p-4 text-left space-y-2 text-xs font-bold text-bubble-dark dark:text-[#f1f5fd] max-w-sm mx-auto">
-              <div class="flex justify-between">
-                <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Услуга:</span>
-                <span>{{ orderForm.service }} ({{ orderForm.weight }} кг)</span>
+              <div class="flex justify-between items-start gap-2">
+                <span class="text-bubble-dark/70 dark:text-[#94a9c9] shrink-0">Услуги:</span>
+                <span class="text-right">{{ selectedServicesText }} ({{ orderForm.weight }} кг)</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-bubble-dark/70 dark:text-[#94a9c9]">Получение:</span>
@@ -578,7 +598,8 @@
 
             <button
               type="button"
-              class="inline-flex items-center justify-center px-6 py-2 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-xs shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover transition-all"
+              class="inline-flex items-center justify-center px-6 py-2 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-xs shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              :disabled="wizardStep === 1 && (!orderForm.services || orderForm.services.length === 0)"
               @click="nextWizardStep"
             >
               Далее →
@@ -1021,8 +1042,17 @@ export default {
         { key: 'eco', label: 'Эко' },
         { key: 'popular', label: 'Популярное' }
       ],
+      serviceOptions: [
+        { name: 'Стирка', price: 8 },
+        { name: 'Сушка', price: 5 },
+        { name: 'Глажка', price: 3 },
+        { name: 'Химчистка', price: 20 },
+        { name: 'Обувь', price: 15 },
+        { name: 'Одеяла', price: 18 }
+      ],
       wizardStep: 1,
       orderForm: {
+        services: ['Стирка'],
         service: 'Стирка',
         weight: 5,
         delivery: 'Заберу',
@@ -1088,6 +1118,12 @@ export default {
     };
   },
   computed: {
+    selectedServicesText() {
+      if (this.orderForm.services && this.orderForm.services.length > 0) {
+        return this.orderForm.services.join(' + ');
+      }
+      return this.orderForm.service || 'Стирка';
+    },
     computedPrice() {
       const basePrices = {
         'Стирка': 8.0,
@@ -1097,7 +1133,14 @@ export default {
         'Обувь': 15.0,
         'Одеяла': 18.0,
       };
-      let p = basePrices[this.orderForm.service] || 8.0;
+      const list = (this.orderForm.services && this.orderForm.services.length > 0)
+        ? this.orderForm.services
+        : (this.orderForm.service ? [this.orderForm.service] : ['Стирка']);
+      let base = 0;
+      for (const s of list) {
+        base += basePrices[s] || 8.0;
+      }
+      let p = base;
       if (this.orderForm.weight === 7) p *= 1.3;
       if (this.orderForm.weight === 3) p *= 0.9;
       if (this.orderForm.delivery === 'Курьер') p += 5.0;
@@ -1187,6 +1230,10 @@ export default {
       }
     },
     nextWizardStep() {
+      if (this.wizardStep === 1 && (!this.orderForm.services || this.orderForm.services.length === 0)) {
+        alert('Пожалуйста, выберите хотя бы одну услугу.');
+        return;
+      }
       if (this.wizardStep === 2 && !this.orderForm.phone) {
         alert('Пожалуйста, укажите контактный номер телефона.');
         return;
@@ -1200,7 +1247,7 @@ export default {
       this.orderSuccessMsg = '';
       try {
         const payload = {
-          service: this.orderForm.service,
+          service: this.selectedServicesText,
           weight: this.orderForm.weight,
           delivery: this.orderForm.delivery,
           phone: this.orderForm.phone || '+375 29 000-00-00',
@@ -1245,14 +1292,18 @@ export default {
     selectService(title) {
       const match = ['Стирка', 'Сушка', 'Глажка', 'Химчистка', 'Обувь', 'Одеяла'].find(s => title.toLowerCase().includes(s.toLowerCase()));
       if (match) {
-        this.orderForm.service = match;
+        if (!this.orderForm.services.includes(match)) {
+          this.orderForm.services.push(match);
+        }
+        this.orderForm.service = this.orderForm.services.join(' + ');
       }
       this.wizardStep = 1;
       const el = document.getElementById('order');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     },
     selectPlan(planName) {
-      this.orderForm.service = 'Стирка';
+      this.orderForm.services = ['Стирка', 'Сушка'];
+      this.orderForm.service = 'Стирка + Сушка';
       this.orderSuccessMsg = `Вы выбрали «${planName}». Перейдите к шагу 2 для подтверждения.`;
       this.wizardStep = 2;
       const el = document.getElementById('order');

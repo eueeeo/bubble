@@ -125,14 +125,27 @@ class OrderController extends Controller
         $basePrices = [
             'Стирка' => 8.0,
             'Сушка' => 5.0,
-            'Глажка' => 4.0,
+            'Глажка' => 3.0,
             'Химчистка' => 20.0,
+            'Обувь' => 15.0,
             'Стирка обуви' => 15.0,
+            'Одеяла' => 18.0,
             'Одеяла и пледы' => 18.0,
             'Деликатная стирка' => 10.0,
         ];
 
-        $base = $basePrices[$service] ?? 8.0;
+        $parts = preg_split('/[\+,]/', $service);
+        $base = 0;
+        foreach ($parts as $part) {
+            $trimmed = trim($part);
+            if (isset($basePrices[$trimmed])) {
+                $base += $basePrices[$trimmed];
+            }
+        }
+        if ($base === 0) {
+            $base = $basePrices[$service] ?? 8.0;
+        }
+
         $multiplier = 1.0;
         if ($weight >= 7) {
             $multiplier = 1.3;
