@@ -167,9 +167,12 @@
         </button>
       </form>
 
-      <form v-else-if="mode === 'forgot'" @submit.prevent="handleForgot" class="space-y-4">
+      <form v-else-if="mode === 'forgot'" key="forgot-form" @submit.prevent="handleForgot" class="space-y-4">
+        <p class="text-xs text-bubble-dark/80 dark:text-[#94a9c9] font-medium leading-relaxed">
+          Укажите ваш email. В целях безопасности пароли не отображаются на экране: ссылка для восстановления будет отправлена на почту.
+        </p>
         <div>
-          <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Email для сброса</label>
+          <label class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd] mb-1.5">Email</label>
           <input
             v-model="forgotEmail"
             type="email"
@@ -184,7 +187,7 @@
           :disabled="loading"
         >
           <span v-if="loading">Отправка...</span>
-          <span v-else>Сбросить пароль</span>
+          <span v-else>Отправить ссылку для сброса</span>
         </button>
       </form>
     </div>
@@ -348,9 +351,11 @@ export default {
       this.successMessage = '';
       try {
         const res = await axios.post('/api/auth/forgot-password', { email: this.forgotEmail });
-        this.successMessage = res.data.message;
+        this.successMessage = res.data?.message || 'Если аккаунт с таким адресом существует, на него отправлена ссылка для восстановления пароля.';
+        this.forgotEmail = '';
       } catch (err) {
-        this.errorMessage = err.response?.data?.message || 'Ошибка восстановления';
+        this.successMessage = 'Если аккаунт с таким адресом существует, на него отправлена ссылка для восстановления пароля.';
+        this.forgotEmail = '';
       } finally {
         this.loading = false;
       }

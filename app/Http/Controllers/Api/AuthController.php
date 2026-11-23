@@ -107,19 +107,9 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user) {
-            return response()->json(['message' => 'Пользователь с таким email не найден'], 404);
-        }
-
-        $tempPassword = 'Reset' . rand(1000, 9999) . '!';
-        $user->password = Hash::make($tempPassword);
-        $user->save();
 
         return response()->json([
-            'message' => 'Пароль успешно сброшен! Ваш временный пароль: ' . $tempPassword,
-            'temp_password' => $tempPassword,
+            'message' => 'Если аккаунт с таким адресом существует, на него отправлена ссылка для восстановления пароля.',
         ]);
     }
 }
