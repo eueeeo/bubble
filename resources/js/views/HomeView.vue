@@ -635,9 +635,6 @@
             class="bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-6 text-bubble-dark dark:text-[#f1f5fd] flex flex-col justify-between hover:-translate-y-1 transition-all"
           >
             <div>
-              <span class="inline-block px-3 py-1 rounded-full border-2 border-bubble-dark text-[11px] font-black bg-bubble-yellow text-bubble-dark shadow-sm mb-3">
-                {{ addr.status }}
-              </span>
               <h3 class="font-black text-xl text-bubble-dark dark:text-[#f1f5fd] mb-1.5">{{ addr.title }}</h3>
               <p class="text-xs text-bubble-dark/80 dark:text-[#94a9c9] my-1 font-medium">{{ addr.time }}</p>
             </div>
@@ -1061,9 +1058,9 @@ export default {
         { num: 4, title: 'Забери', desc: 'Чистое и поглаженное.' },
       ],
       addresses: [
-        { title: 'ул. Пузырьковая, 12', time: 'Ежедневно 8:00–21:00', equipment: '6 стиральных и 4 сушильные машины', status: 'Открыто • Прием и выдача' },
-        { title: 'ул. Пенная, 45', time: 'Ежедневно 7:00–24:00', equipment: '8 стиральных и 6 сушильных машин', status: 'Открыто • Экспресс-пункт' },
-        { title: 'ул. Мыльная, 3', time: 'Ежедневно 8:00–22:00', equipment: '6 стиральных и 4 сушильные машины', status: 'Открыто • Прием и выдача' },
+        { title: 'ул. Пузырьковая, 12', time: 'Ежедневно 8:00–21:00', equipment: '6 стиральных и 4 сушильные машины' },
+        { title: 'ул. Пенная, 45', time: 'Ежедневно 7:00–24:00', equipment: '8 стиральных и 6 сушильных машин' },
+        { title: 'ул. Мыльная, 3', time: 'Ежедневно 8:00–22:00', equipment: '6 стиральных и 4 сушильные машины' },
       ],
       reviews: [
         { text: 'Стирала зимний пуховик и плед. В обычную домашнюю машинку они не влезали, а тут огромные барабаны на 10 кг. Все чистое, мягкое и пух не сбился!', author: 'Анна Зайцева' },
