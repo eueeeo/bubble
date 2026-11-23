@@ -719,7 +719,10 @@
             class="w-80 shrink-0 bg-white dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-6 snap-center flex flex-col justify-between text-bubble-dark dark:text-[#f1f5fd] hover:-translate-y-1 transition-all duration-200"
           >
             <div>
-              <div class="text-bubble-yellow text-sm font-black mb-2 tracking-wider">★★★★★</div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-bubble-yellow text-sm font-black tracking-wider">★★★★★</div>
+                <span v-if="rev.date" class="text-[11px] font-bold text-bubble-dark/60 dark:text-[#94a9c9]">{{ rev.date }}</span>
+              </div>
               <p class="text-xs text-bubble-dark/85 dark:text-[#f1f5fd] leading-relaxed font-medium">«{{ rev.text }}»</p>
             </div>
             <div class="flex items-center gap-2.5 mt-4 pt-3 border-t-2 border-bubble-dark/10 dark:border-[#24355a]">
@@ -1090,9 +1093,9 @@ export default {
         { title: 'ул. Мыльная, 3', time: 'Ежедневно 8:00–22:00', equipment: '6 стиральных и 4 сушильные машины' },
       ],
       reviews: [
-        { text: 'Стирала зимний пуховик и плед. В обычную домашнюю машинку они не влезали, а тут огромные барабаны на 10 кг. Все чистое, мягкое и пух не сбился!', author: 'Анна Зайцева' },
-        { text: 'Беру абонемент на 6 стирок. Очень спасает после тренировок: закинул форму, взял кофе, посидел с ноутбуком по Wi-Fi — через час все сухое.', author: 'Игорь Власов' },
-        { text: 'Заказывали выезд курьера на дом: забрал три пакета белья и вернул на следующий день в аккуратных крафтовых чехлах. Настоящее спасение для семьи!', author: 'Мария Чернышева' }
+        { text: 'Стирала зимний пуховик и плед. В обычную домашнюю машинку они не влезали, а тут огромные барабаны на 10 кг. Все чистое, мягкое и пух не сбился!', author: 'Анна Зайцева', date: '14 октября 2026' },
+        { text: 'Беру абонемент на 6 стирок. Очень спасает после тренировок: закинул форму, взял кофе, посидел с ноутбуком по Wi-Fi — через час все сухое.', author: 'Игорь Власов', date: '28 октября 2026' },
+        { text: 'Заказывали выезд курьера на дом: забрал три пакета белья и вернул на следующий день в аккуратных крафтовых чехлах. Настоящее спасение для семьи!', author: 'Мария Чернышева', date: '12 ноября 2026' }
       ],
       faqList: [
         {
@@ -1266,6 +1269,13 @@ export default {
       }
     },
     submitReview() {
+      if (this.reviewForm.name && this.reviewForm.text) {
+        this.reviews.unshift({
+          author: this.reviewForm.name,
+          text: this.reviewForm.text,
+          date: '23 ноября 2026'
+        });
+      }
       this.reviewSuccessMsg = 'Спасибо за ваш отзыв! Мы ценим ваше мнение.';
       this.reviewForm = { name: '', text: '' };
     },
