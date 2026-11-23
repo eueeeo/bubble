@@ -3,41 +3,6 @@ export default {
     try {
       const url = new URL(request.url);
 
-      if (url.pathname === '/admin' || url.pathname.startsWith('/admin')) {
-        const html = `<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Панель управления Voyager — Bubble</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #080e1c; color: #f1f5fd; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
-    .card { background: #131d33; border: 2px solid #24355a; border-radius: 20px; padding: 36px; max-width: 540px; text-align: center; box-shadow: 4px 4px 0px #000; }
-    .badge { display: inline-block; background: #fed7aa; color: #9a3412; font-weight: 800; font-size: 11px; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; margin-bottom: 16px; border: 1px solid #f97316; }
-    h1 { color: #facc15; font-size: 26px; font-weight: 900; margin: 0 0 14px 0; }
-    p { font-size: 14px; line-height: 1.6; color: #94a9c9; margin: 0 0 20px 0; }
-    .info { background: #0c1424; border: 1px solid #1f2d47; border-radius: 12px; padding: 14px; text-align: left; font-size: 13px; color: #cbd5e1; margin-bottom: 24px; }
-    .info code { color: #38bdf8; font-weight: bold; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; background: #facc15; color: #080e1c; font-weight: 800; font-size: 13px; padding: 12px 24px; border-radius: 99px; text-decoration: none; border: 2px solid #000; box-shadow: 3px 3px 0px #000; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <span class="badge">Laravel Voyager Admin</span>
-    <h1>Панель администратора</h1>
-    <p>Админ-панель Voyager работает на бэкенд-сервере PHP и базе данных SQLite.</p>
-    <div class="info">
-      <div>Локальный сервер: <code>php artisan serve</code></div>
-      <div>Адрес панели: <code>http://127.0.0.1:8000/admin</code></div>
-      <div>Вход: <code>admin@admin.com</code> / <code>password</code></div>
-    </div>
-    <a href="/" class="btn">← Вернуться на главную страницу</a>
-  </div>
-</body>
-</html>`;
-        return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
-      }
-
       if (url.pathname.startsWith('/api/orders')) {
         if (request.method === 'POST') {
           const body = await request.json().catch(() => ({}));
