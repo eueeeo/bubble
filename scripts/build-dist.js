@@ -35,7 +35,7 @@ if (fs.existsSync(manifestPath)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bubble — прачечная рядом</title>
+    <title>Bubble</title>
     ${cssFile ? `<link rel="stylesheet" href="/${cssFile}">` : ''}
     ${jsFile ? `<script type="module" src="/${jsFile}"></script>` : ''}
 </head>
