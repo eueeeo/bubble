@@ -9,6 +9,7 @@
         <nav class="hidden lg:flex items-center gap-3 xl:gap-5 ml-auto text-white dark:text-[#f1f5fd] text-xs xl:text-sm font-bold">
           <a href="/#prices" class="hover:opacity-75 transition-opacity">Цены</a>
           <a href="/#how" class="hover:opacity-75 transition-opacity">Как это работает</a>
+          <router-link to="/order" class="hover:opacity-75 transition-opacity">Заказ онлайн</router-link>
           <a href="/#addresses" class="hover:opacity-75 transition-opacity">Адреса</a>
           <a href="/#faq" class="hover:opacity-75 transition-opacity">Вопросы</a>
           <a href="/#contacts" class="hover:opacity-75 transition-opacity">Контакты</a>
