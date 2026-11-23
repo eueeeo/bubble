@@ -621,10 +621,10 @@
       <div class="w-[min(1180px,calc(100%-48px))] mx-auto">
         <div class="text-center max-w-xl mx-auto mb-10">
           <h2 class="text-white dark:text-[#ff9dcd] font-black text-4xl sm:text-5xl tracking-tight mb-3">
-            Прачечные рядом
+            Филиалы прачечной
           </h2>
           <p class="text-xs sm:text-sm text-white/90 dark:text-[#ff9dcd]/80 font-medium">
-            Выберите ближайший филиал и проверьте загруженность машинок онлайн
+            Выберите удобный филиал для самовывоза или сдачи вещей
           </p>
         </div>
 
@@ -632,28 +632,23 @@
           <article
             v-for="addr in addresses"
             :key="addr.title"
-            class="bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-6 text-bubble-dark dark:text-[#f1f5fd] flex flex-col justify-between"
+            class="bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark/30 dark:border-[#24355a] rounded-[22px] shadow-brutal p-6 text-bubble-dark dark:text-[#f1f5fd] flex flex-col justify-between hover:-translate-y-1 transition-all"
           >
             <div>
+              <span class="inline-block px-3 py-1 rounded-full border border-bubble-dark/20 text-[11px] font-black bg-white dark:bg-[#0c1424] text-bubble-blue dark:text-bubble-blue-ice mb-3">
+                {{ addr.status }}
+              </span>
               <h3 class="font-black text-xl text-bubble-dark dark:text-[#f1f5fd] mb-1.5">{{ addr.title }}</h3>
               <p class="text-xs text-bubble-dark/80 dark:text-[#94a9c9] my-1 font-medium">{{ addr.time }}</p>
             </div>
 
             <div class="mt-5 pt-3.5 border-t-2 border-bubble-dark/10 dark:border-[#24355a]">
-              <div class="text-[11px] font-black text-bubble-dark/60 dark:text-[#94a9c9] mb-1.5 uppercase tracking-wider">
-                Загруженность машинок:
+              <div class="text-[11px] font-black text-bubble-dark/60 dark:text-[#94a9c9] mb-1 uppercase tracking-wider">
+                Оснащение филиала:
               </div>
-              <div class="flex items-center gap-2 mb-2" :title="'Занято: ' + addr.busy + ' из ' + addr.total">
-                <span
-                  v-for="dot in addr.total"
-                  :key="dot"
-                  class="w-4 h-4 rounded-full border-2 border-bubble-dark dark:border-[#357ff1] transition-all"
-                  :class="dot <= addr.busy ? 'bg-bubble-blue dark:bg-bubble-blue-ice shadow-sm' : 'bg-white dark:bg-[#080e1c] opacity-40'"
-                ></span>
-              </div>
-              <strong class="text-xs font-black text-bubble-dark dark:text-bubble-blue-ice block">
-                {{ addr.status }}
-              </strong>
+              <p class="text-xs font-bold text-bubble-dark/90 dark:text-[#f1f5fd]">
+                {{ addr.equipment }}
+              </p>
             </div>
           </article>
         </div>
@@ -1066,9 +1061,9 @@ export default {
         { num: 4, title: 'Забери', desc: 'Чистое и поглаженное.' },
       ],
       addresses: [
-        { title: 'Пузырьковая, 12', time: 'Ежедневно 8:00–21:00', status: 'Свободно 4 из 6', busy: 2, total: 6 },
-        { title: 'Пенная, 45', time: 'Ежедневно 7:00–24:00', status: 'Свободно 1 из 6', busy: 5, total: 6 },
-        { title: 'Мыльная, 3', time: 'Ежедневно 8:00–22:00', status: 'Все свободны', busy: 0, total: 6 },
+        { title: 'ул. Пузырьковая, 12', time: 'Ежедневно 8:00–21:00', equipment: '6 стиральных и 4 сушильные машины', status: 'Открыто • Прием и выдача' },
+        { title: 'ул. Пенная, 45', time: 'Ежедневно 7:00–24:00', equipment: '8 стиральных и 6 сушильных машин', status: 'Открыто • Экспресс-пункт' },
+        { title: 'ул. Мыльная, 3', time: 'Ежедневно 8:00–22:00', equipment: '6 стиральных и 4 сушильные машины', status: 'Открыто • Прием и выдача' },
       ],
       reviews: [
         { text: 'Стирала зимний пуховик и плед. В обычную домашнюю машинку они не влезали, а тут огромные барабаны на 10 кг. Все чистое, мягкое и пух не сбился!', author: 'Анна Зайцева' },
