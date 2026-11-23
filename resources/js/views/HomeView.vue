@@ -407,7 +407,7 @@
             <fieldset>
               <div class="flex items-center justify-between mb-2">
                 <legend class="block text-xs font-extrabold text-bubble-dark dark:text-[#f1f5fd]">
-                  Услуги (можно выбрать несколько)
+                  Услуги
                 </legend>
                 <span class="text-[11px] font-black text-bubble-blue dark:text-bubble-blue-ice">
                   Выбрано: {{ orderForm.services.length }}
@@ -924,9 +924,6 @@
               Таблица заказов →
             </router-link>
           </div>
-          <p class="text-xs sm:text-sm text-bubble-dark/80 dark:text-[#94a9c9] mb-5 font-medium">
-            Перетащите файл <code>.xlsx</code> или <code>.xls</code>. Заказы автоматически добавятся в базу данных, а исходный файл сохранится на сервере.
-          </p>
           <div
             class="border-2 border-dashed border-bubble-dark/40 dark:border-[#24355a] rounded-xl p-8 text-center cursor-pointer transition-all bg-bubble-cream/50 dark:bg-[#080e1c] hover:border-bubble-blue hover:bg-bubble-blue-light/20 dark:hover:bg-[#1a2640]"
             :class="{ 'border-bubble-blue bg-bubble-blue-light/40 dark:bg-[#1a2640]': isDragging }"

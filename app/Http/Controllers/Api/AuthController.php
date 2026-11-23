@@ -13,9 +13,24 @@ class AuthController extends Controller
 {
     public function user(Request $request)
     {
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'user' => null,
+                'authenticated' => false,
+            ]);
+        }
+
         return response()->json([
-            'user' => Auth::user(),
-            'authenticated' => Auth::check(),
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role_id' => (int) $user->role_id,
+                'is_admin' => (int) $user->role_id === 1 || $user->email === 'admin@admin.com',
+                'role' => (int) $user->role_id === 1 ? 'admin' : 'user',
+            ],
+            'authenticated' => true,
         ]);
     }
 
@@ -28,9 +43,17 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember', true))) {
             $request->session()->regenerate();
+            $user = Auth::user();
             return response()->json([
                 'message' => 'Успешная авторизация',
-                'user' => Auth::user(),
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role_id' => (int) $user->role_id,
+                    'is_admin' => (int) $user->role_id === 1 || $user->email === 'admin@admin.com',
+                    'role' => (int) $user->role_id === 1 ? 'admin' : 'user',
+                ],
             ]);
         }
 
@@ -51,6 +74,7 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'role_id' => 2,
         ]);
 
         Auth::login($user);
@@ -58,7 +82,14 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Регистрация успешно завершена',
-            'user' => $user,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role_id' => 2,
+                'is_admin' => false,
+                'role' => 'user',
+            ],
         ]);
     }
 

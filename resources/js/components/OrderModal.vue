@@ -79,10 +79,10 @@
               v-model="form.status"
               class="w-full min-h-[42px] rounded-[9px] border-2 border-bubble-dark dark:border-[#24355a] bg-white dark:bg-[#0e182a] px-3.5 py-2 text-sm font-bold text-bubble-dark dark:text-[#f1f5fd] focus:ring-4 focus:ring-bubble-blue/20 outline-none cursor-pointer"
             >
-              <option value="new">Новый (new)</option>
-              <option value="processing">В работе (processing)</option>
-              <option value="done">Готов (done)</option>
-              <option value="cancelled">Отменен (cancelled)</option>
+              <option value="new">Новый</option>
+              <option value="processing">В работе</option>
+              <option value="done">Готов</option>
+              <option value="cancelled">Отменен</option>
             </select>
           </div>
 
@@ -172,7 +172,7 @@ export default {
             weight: Number(val.weight) || 5,
             delivery: val.delivery || 'Заберу',
             phone: val.phone || '',
-            status: val.status || 'new',
+            status: this.normalizeModalStatus(val.status),
             price: Number(val.price) || 8.0,
             notes: val.notes || '',
           };
@@ -220,6 +220,13 @@ export default {
       if (this.form.weight === 3) p *= 0.9;
       if (this.form.delivery === 'Курьер') p += 5.0;
       this.form.price = Math.round(p * 100) / 100;
+    },
+    normalizeModalStatus(status) {
+      const s = String(status || '').trim().toLowerCase();
+      if (s === 'processing' || s === 'in_progress' || s === 'в работе') return 'processing';
+      if (s === 'done' || s === 'completed' || s === 'готов' || s === 'завершен') return 'done';
+      if (s === 'cancelled' || s === 'отменен') return 'cancelled';
+      return 'new';
     },
     submitForm() {
       if (!this.form.phone) {

@@ -34,9 +34,6 @@
         <h2 class="text-bubble-blue dark:text-bubble-blue-ice font-black text-3xl sm:text-4xl tracking-[-1.5px] text-shadow-title">
           Управление заказами
         </h2>
-        <p class="text-xs sm:text-sm text-bubble-dark/80 dark:text-[#94a9c9] mt-1 font-medium">
-          Контроль заказов прачечной, канбан-доска процессов и аналитика показателей.
-        </p>
       </div>
 
       <div class="flex flex-wrap items-center gap-2.5">
@@ -157,12 +154,7 @@
               <td class="p-3.5">
                 <span
                   class="inline-block px-2.5 py-0.5 rounded-full border border-bubble-dark dark:border-[#24355a] text-[11px] font-bold"
-                  :class="{
-                    'bg-bubble-blue-light dark:bg-[#152347] text-bubble-dark dark:text-[#f1f5fd]': order.status === 'new',
-                    'bg-bubble-yellow dark:bg-[#1e2e54] text-bubble-dark dark:text-[#f1f5fd]': order.status === 'processing',
-                    'bg-green-200 dark:bg-emerald-950 text-bubble-dark dark:text-emerald-200': order.status === 'done',
-                    'bg-bubble-pink dark:bg-rose-950 text-bubble-dark dark:text-rose-200': order.status === 'cancelled',
-                  }"
+                  :class="statusBadgeClass(order.status)"
                 >
                   {{ formatStatus(order.status) }}
                 </span>
@@ -395,7 +387,6 @@
         <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-bubble-dark/10 dark:border-[#24355a]">
           <div>
             <h3 class="text-base font-black text-bubble-dark dark:text-bubble-blue-ice">Загрузка прачечной по дням недели</h3>
-            <p class="text-xs text-bubble-dark/70 dark:text-[#94a9c9] font-medium">Распределение количества циклов стирки и сушки по дням</p>
           </div>
           <span class="px-3 py-1 rounded-full border border-bubble-dark dark:border-[#24355a] bg-bubble-cream dark:bg-[#080e1c] text-[11px] font-black text-bubble-dark dark:text-[#f1f5fd]">
             Текущая неделя
@@ -474,12 +465,7 @@
                 <td class="p-3">
                   <span
                     class="px-2.5 py-0.5 rounded-full border border-bubble-dark dark:border-[#24355a] text-[10px] font-black"
-                    :class="{
-                      'bg-bubble-blue-light dark:bg-[#1a2640] text-bubble-dark dark:text-[#f1f5fd]': order.status === 'new',
-                      'bg-bubble-yellow dark:bg-[#1e2e54] text-bubble-dark dark:text-[#f1f5fd]': order.status === 'processing',
-                      'bg-green-200 dark:bg-emerald-950 text-bubble-dark dark:text-emerald-200': order.status === 'done',
-                      'bg-bubble-pink dark:bg-rose-950 text-bubble-dark dark:text-rose-200': order.status === 'cancelled',
-                    }"
+                    :class="statusBadgeClass(order.status)"
                   >
                     {{ formatStatus(order.status) }}
                   </span>
@@ -543,18 +529,22 @@ export default {
           (order.phone && order.phone.toLowerCase().includes(q)) ||
           (order.service && order.service.toLowerCase().includes(q)) ||
           (order.notes && order.notes.toLowerCase().includes(q));
-        const matchStatus = this.statusFilter === 'all' || order.status === this.statusFilter;
+        const norm = this.normalizeStatus(order.status);
+        const matchStatus = this.statusFilter === 'all' || norm === this.statusFilter;
         return matchQuery && matchStatus;
       });
     },
     activeOrdersCount() {
-      return this.orders.filter(o => o.status === 'processing' || o.status === 'new').length;
+      return this.orders.filter(o => {
+        const norm = this.normalizeStatus(o.status);
+        return norm === 'processing' || norm === 'new';
+      }).length;
     },
     totalRevenue() {
       return this.orders.reduce((sum, o) => sum + Number(o.price || 0), 0).toFixed(2);
     },
     completedCount() {
-      return this.orders.filter(o => o.status === 'done').length;
+      return this.orders.filter(o => this.normalizeStatus(o.status) === 'done').length;
     },
     averageCheck() {
       if (this.orders.length === 0) return '0.00';
@@ -562,13 +552,13 @@ export default {
       return (sum / this.orders.length).toFixed(2);
     },
     kanbanNewOrders() {
-      return this.orders.filter(o => o.status === 'new');
+      return this.orders.filter(o => this.normalizeStatus(o.status) === 'new');
     },
     kanbanProcessingOrders() {
-      return this.orders.filter(o => o.status === 'processing');
+      return this.orders.filter(o => this.normalizeStatus(o.status) === 'processing');
     },
     kanbanDoneOrders() {
-      return this.orders.filter(o => o.status === 'done');
+      return this.orders.filter(o => this.normalizeStatus(o.status) === 'done');
     }
   },
   mounted() {
@@ -664,14 +654,31 @@ export default {
         alert('Не удалось изменить статус заказа: ' + (err.response?.data?.message || err.message));
       }
     },
+    normalizeStatus(status) {
+      const s = String(status || '').trim().toLowerCase();
+      if (s === 'new' || s === 'новый') return 'new';
+      if (s === 'processing' || s === 'in_progress' || s === 'в работе' || s === 'процесс') return 'processing';
+      if (s === 'done' || s === 'completed' || s === 'готов' || s === 'завершен') return 'done';
+      if (s === 'cancelled' || s === 'отменен') return 'cancelled';
+      return s || 'new';
+    },
     formatStatus(status) {
+      const norm = this.normalizeStatus(status);
       const map = {
         'new': 'Новый',
         'processing': 'В работе',
         'done': 'Готов',
         'cancelled': 'Отменен',
       };
-      return map[status] || status;
+      return map[norm] || status || 'Новый';
+    },
+    statusBadgeClass(status) {
+      const norm = this.normalizeStatus(status);
+      if (norm === 'new') return 'bg-bubble-blue-light dark:bg-[#152347] text-bubble-dark dark:text-[#f1f5fd]';
+      if (norm === 'processing') return 'bg-bubble-yellow dark:bg-[#1e2e54] text-bubble-dark dark:text-[#f1f5fd]';
+      if (norm === 'done') return 'bg-green-200 dark:bg-emerald-950 text-bubble-dark dark:text-emerald-200';
+      if (norm === 'cancelled') return 'bg-bubble-pink dark:bg-rose-950 text-bubble-dark dark:text-rose-200';
+      return 'bg-slate-100 dark:bg-slate-800 text-bubble-dark dark:text-[#f1f5fd]';
     },
   },
 };
