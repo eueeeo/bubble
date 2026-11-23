@@ -9,6 +9,7 @@
         <nav class="hidden lg:flex items-center gap-3 xl:gap-5 ml-auto text-white dark:text-[#f1f5fd] text-xs xl:text-sm font-bold">
           <a href="/#prices" class="hover:opacity-75 transition-opacity">Цены</a>
           <a href="/#how" class="hover:opacity-75 transition-opacity">Как это работает</a>
+          <a href="/#order" class="hover:opacity-75 transition-opacity">Калькулятор</a>
           <a href="/#addresses" class="hover:opacity-75 transition-opacity">Адреса</a>
           <a href="/#faq" class="hover:opacity-75 transition-opacity">Вопросы</a>
           <a href="/#contacts" class="hover:opacity-75 transition-opacity">Контакты</a>
@@ -59,12 +60,12 @@
           </template>
         </nav>
 
-        <router-link
-          to="/order"
+        <a
+          href="/#order"
           class="hidden sm:inline-flex items-center justify-center min-h-[42px] px-6 rounded-full border-2 border-bubble-dark bg-bubble-yellow text-bubble-dark font-extrabold text-sm shadow-brutal-btn hover:-translate-y-0.5 hover:shadow-brutal-btn-hover active:translate-y-0.5 active:shadow-[0_1px_0_#101a38] transition-all"
         >
-          Оформить заказ
-        </router-link>
+          Заказать
+        </a>
 
         <div class="lg:hidden flex items-center gap-2">
           <button
@@ -96,15 +97,9 @@
         v-if="isNavOpen"
         class="lg:hidden w-[min(1180px,calc(100%-48px))] mx-auto mb-4 p-5 bg-bubble-cream dark:bg-[#131d33] border-2 border-bubble-dark dark:border-[#24355a] rounded-2xl shadow-brutal flex flex-col gap-3 font-bold text-sm text-bubble-dark dark:text-[#f1f5fd]"
       >
-        <router-link
-          to="/order"
-          class="text-bubble-dark font-black bg-bubble-yellow p-2.5 rounded-xl text-center border-2 border-bubble-dark shadow-sm"
-          @click="isNavOpen = false"
-        >
-          Оформить заказ
-        </router-link>
         <a href="/#prices" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Цены</a>
         <a href="/#how" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Как это работает</a>
+        <a href="/#order" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Оформить заказ</a>
         <a href="/#addresses" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Адреса</a>
         <a href="/#faq" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Вопросы</a>
         <a href="/#contacts" class="hover:text-bubble-blue dark:hover:text-bubble-blue-ice" @click="isNavOpen = false">Контакты</a>
